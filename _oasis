@@ -1,0 +1,17 @@
+OASISFormat: 0.4
+BuildTools: ocamlbuild
+Plugins: META (0.4), DevFiles (0.4)
+
+Name: Piplet
+Version: 0.1
+Synopsis: Tools for static documents service.
+Authors: Xavier Van de Woestyne <xaviervdw@gmail.com>
+License: LGPL with OCaml linking exception
+
+Description: Piplet is a little static page generator.
+Homepage: http://xvw.github.io
+
+Library "Piplet"
+  Path: src
+  Modules: Piplet
+  InternalModules: PipRegexp, PipChannel, PipGit
