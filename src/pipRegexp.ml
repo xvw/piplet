@@ -1,5 +1,5 @@
 (* Regexp Helpers *)
-include Str
+open Str
           
 let str_split pattern =
   split (regexp pattern) 
