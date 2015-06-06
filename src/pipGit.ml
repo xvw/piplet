@@ -14,7 +14,7 @@ module Elt =
     type micro_commit = {
       author       : string
     ; hash         : string
-    ; date         : string
+    ; date         : Unix.tm
     ; subject      : string
     }
 
@@ -37,7 +37,7 @@ module Elt =
         {
           author  = mail;
           hash    = hash;
-          date    = date;
+          date    = PipDate.string_to_gtm date;
           subject = subject 
         }
       | _ -> raise Malformed_commit

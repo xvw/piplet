@@ -12,6 +12,11 @@ Description: Piplet is a little static page generator.
 Homepage: http://xvw.github.io
 
 Library "Piplet"
-  Path: src
+  Path: src/
   Modules: Piplet
-  InternalModules: PipRegexp, PipChannel, PipGit
+  InternalModules:
+    PipRegexp,
+    PipDate,
+    PipChannel,
+    PipGit
+  BuildDepends: unix, str
