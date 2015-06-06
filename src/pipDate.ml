@@ -2,23 +2,29 @@
 
 
 let months_array =
-    [| "Jan"; "Feb"; "Mar"; "Apr"; "May"; "Jun";
-       "Jul"; "Aug"; "Sep"; "Oct"; "Nov"; "Dec"; |]
+  [| "Jan"; "Feb"; "Mar"
+   ; "Apr"; "May"; "Jun"
+   ; "Jul"; "Aug"; "Sep"
+   ; "Oct"; "Nov"; "Dec"; |]
     
 let months_hash () =
   let hash = Hashtbl.create 12 in
   let _ =
     Array.iteri
-      (fun i x -> Hashtbl.add hash x i) months_array
+      (fun i x -> Hashtbl.add hash x i)
+      months_array
   in hash
 
-let days_array = [| "Sun"; "Mon"; "Tue"; "Wed"; "Thu"; "Fri"; "Sat" |]
+let days_array =
+  [| "Sun"; "Mon"; "Tue";
+     "Wed"; "Thu"; "Fri"; "Sat" |]
 
 let days_hash () =
   let hash = Hashtbl.create 7 in
   let _ =
     Array.iteri
-      (fun i x -> Hashtbl.add hash x i) days_array
+      (fun i x -> Hashtbl.add hash x i)
+      days_array
   in hash
   
 
@@ -62,4 +68,3 @@ let gmt_to_string ?(i="+0100") gmt_date =
     gmt_date.tm_min
     gmt_date.tm_sec
     i
-    

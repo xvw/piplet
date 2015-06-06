@@ -9,3 +9,5 @@ let str_replace pattern form =
 
 let str_purge pattern =
   str_replace pattern ""
+
+
