@@ -53,31 +53,40 @@ module Commands =
 
     open Printf
 
-    let select = sprintf "git -C %s"
-    let this = select "."
-    let exec ?(repo = ".") = sprintf "%s %s" (select repo)
+    let select repo =
+      PipCommand.make
+        ~name:"git"
+        ~args:[("-C", Some repo)]
+        []
 
-    let log ?(repo = ".") ?(file = ".") format =
-      file
-      |> sprintf "log --pretty=format:'%s' %s" format
-      |> exec ~repo
+    let log ?(repo=".") ?(file = ".") format =
+      (select repo)
+      |> PipCommand.add_args
+        [("log", None); ("--pretty=", Some ("format:'" ^ format ^ "'"))]
+      |> PipCommand.set_body [file]
+        
+    let authors ?(repo=".") ?(file = ".") format =
+      log ~repo ~file format
+      |> PipCommand.add_args [("--no-merges", None)]
 
-    let authors ?(repo = ".") ?(file = ".") format =
-      file
-      |> sprintf
-           "log --no-merges --pretty=format:'%s' %s | sort | uniq"
-           format
-      |> exec ~repo
-    
+    let curren_branch repo =
+      select repo
+      |> PipCommand.add_args
+        [
+          ("symbolic-ref", None);
+          ("-q", None);
+          ("--short", Some "HEAD");
+        ]
+
+    let branch repo =
+      select repo
+      |> PipCommand.set_body ["branch"]
+
   end
-
-let retreive cmd =
-  PipChannel.In.process_execute cmd
-  |> PipChannel.In.to_string
 
 let authors_of ?(file = ".") repo =
   Commands.authors ~repo ~file  "%an|%ae"
-  |> retreive
+  |> PipCommand.run
   |> PipRegexp.str_split "\n"
   |> List.map (Elt.string_to_people)
 
@@ -88,25 +97,25 @@ let emails_of ?(file = ".") repo =
 let micro_commits_of ?(file = ".") repo =
   Commands.log
     ~repo ~file "%H|||%ae|||%aD|||%s"
-  |> retreive
+  |> PipCommand.run
   |> PipRegexp.str_split "\n"
   |> List.map (Elt.string_to_micro_commit)
 
 let last_update_of ?(file = ".") repo =
   Commands.log
     ~repo ~file "%ar"
-  |> retreive
+  |> PipCommand.run
   |> PipRegexp.str_split "\n"
   |> List.hd
 
 let current_branch repo =
-  Commands.exec ~repo "symbolic-ref -q --short HEAD"
-  |> retreive
+  Commands.curren_branch repo
+  |> PipCommand.run
   |> PipRegexp.str_purge "\n"
 
 let branch repo =
-  Commands.exec ~repo "branch"
-  |> retreive
+  Commands.branch repo
+  |> PipCommand.run
   |> PipRegexp.str_purge "*"
   |> PipRegexp.str_purge " "
   |> PipRegexp.str_split "\n"

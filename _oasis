@@ -18,5 +18,6 @@ Library "Piplet"
     PipRegexp,
     PipDate,
     PipChannel,
+    PipCommand, 
     PipGit
   BuildDepends: unix, str
