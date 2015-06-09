@@ -20,5 +20,6 @@ Library "Piplet"
     PipChannel,
     PipFile,
     PipCommand, 
-    PipGit
+    PipGit,
+    PipPandoc
   BuildDepends: unix, str

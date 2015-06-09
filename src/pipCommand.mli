@@ -13,3 +13,4 @@ val set_args : arg list -> t -> t
 val set_body : string list -> t -> t
 val add_args : arg list -> t -> t
 val add_body : string list -> t -> t
+val ( ||| )   : t -> t -> t

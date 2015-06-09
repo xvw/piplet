@@ -4,3 +4,4 @@ module Channel = PipChannel
 module File    = PipFile
 module Command = PipCommand
 module Git     = PipGit
+module Pandoc  = PipPandoc

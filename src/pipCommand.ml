@@ -46,6 +46,10 @@ let add_args args cmd =
   let total_args = cmd.args @ args in
   set_args total_args cmd
 
+
 let add_body body cmd =
   let total_body = cmd.body @ body in
   set_body total_body cmd
+
+let ( ||| ) a b =
+  add_body (["|"; to_string b]) a
