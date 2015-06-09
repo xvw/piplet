@@ -1,2 +1,4 @@
 (* Wrapper for pandoc *)
-val convert: string -> string -> string -> string
+val convert: ?format_in:string -> ?format_out:string -> string -> string
+val convert_file: ?format_in:string -> ?format_out:string ->
+  string -> string -> unit
