@@ -15,14 +15,24 @@ let echo content =
     ~args:[]
     ["\""^content^"\""]
 
-let convert ?(format_in="markdown") ?(format_out="html") content =
+let convert
+    ?(option=[])
+    ?(format_in="markdown")
+    ?(format_out="html")
+    content
+  =
   let open PipCommand in 
   echo content
   ||| pandoc ~f:format_in ~t:format_out
+  |> add_args option 
   |> run
 
-let convert_file ?(format_in="markdown") ?(format_out="html")
-    file_in file_out =
+let convert_file
+    ?(option=[])
+    ?(format_in="markdown")
+    ?(format_out="html")
+    file_in file_out
+  =
   let open PipCommand in 
   pandoc ~f:format_in ~t:format_out
   |> add_body [file_in]
