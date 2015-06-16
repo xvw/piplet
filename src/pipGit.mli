@@ -23,3 +23,5 @@ val micro_commits_of: ?file:string -> string -> Elt.micro_commit list
 val last_update_of: ?file:string -> string -> string
 val current_branch: string -> string
 val branch: string -> string list
+val switch_branch : ?create:bool -> string -> string -> unit
+val retreive_branch : string -> unit

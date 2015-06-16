@@ -82,7 +82,25 @@ module Commands =
       select repo
       |> PipCommand.set_body ["branch"]
 
+    let checkout ?(create=false) repo target =
+      select repo
+      |> PipCommand.set_body
+        [
+          "checkout" ^ (if create then " -b" else "");
+          target
+        ]
+
   end
+
+exception Uninitialized_branch_history
+
+type stored_cache = {
+  mutable last_branchs : (string, string) Hashtbl.t
+}
+
+let cache = {
+  last_branchs = Hashtbl.create 1;
+}
 
 let authors_of ?(file = ".") repo =
   Commands.authors ~repo ~file  "%an|%ae"
@@ -119,3 +137,19 @@ let branch repo =
   |> PipRegexp.str_purge "*"
   |> PipRegexp.str_purge " "
   |> PipRegexp.str_split "\n"
+
+let switch_branch ?(create=false) repo branch =
+  let _ =
+    Hashtbl.replace
+      cache.last_branchs
+      repo
+      (current_branch repo)
+  in 
+  Commands.checkout ~create repo branch
+  |> PipCommand.run
+  |> ignore
+
+let retreive_branch repo =
+  match Hashtbl.find_all cache.last_branchs repo with
+  | [] -> raise Uninitialized_branch_history
+  | x::_ -> switch_branch repo x
