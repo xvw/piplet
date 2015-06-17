@@ -49,3 +49,8 @@ let basename filename =
   filename
   |> Filename.basename
   |> Filename.chop_extension
+
+let update_with filename callback =
+  read filename
+  |> callback
+  |> write filename
