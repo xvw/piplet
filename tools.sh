@@ -21,4 +21,7 @@ then
     make
     ocaml -I _build/src unix.cma str.cma Piplet.cma
     echo "Bye"
+
+else
+    ocamlc -I _build/src unix.cma str.cma Piplet.cma $*
 fi
