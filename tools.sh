@@ -23,5 +23,6 @@ then
     echo "Bye"
 
 else
+    make
     ocamlc -I _build/src unix.cma str.cma Piplet.cma $*
 fi

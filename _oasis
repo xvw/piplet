@@ -23,4 +23,3 @@ Library "Piplet"
     PipPandoc,
     PipTemplate
   BuildDepends: unix, str
-
