@@ -13,5 +13,6 @@ Library "Piplet"
   Path: lib/
   Modules: Piplet
   InternalModules:
+    PipRegex,
     PipBash
   BuildDepends: unix, str

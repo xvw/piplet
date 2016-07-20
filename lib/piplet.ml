@@ -1,1 +1,2 @@
-module Bash = PipBash
+module Regex = PipRegex
+module Bash  = PipBash
