@@ -1,6 +1,8 @@
+type flag = (string * string option)
+
 type command = {
   head   : string
-; middle : (string * string option) list
+; middle : flag list
 ; tail   : string list
 }
 
@@ -21,3 +23,12 @@ let print_command cmd = print_string (command_to_string cmd)
 
 let open_execution_channel  = Unix.open_process_in
 let close_execution_channel = Unix.close_process_in
+
+let flag name value = (name, Some value)
+let param name = (name, None)
+
+let make_command ?(flags = []) name args = {
+  head   = name
+; middle = flags
+; tail   = args
+}

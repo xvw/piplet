@@ -19,9 +19,9 @@ elif [ "$1" = "run" ];
 then
     echo "Run OCaml with piplet"
     make
-    ocaml -I _build/src unix.cma str.cma Piplet.cma
+    ocaml -I _build/lib unix.cma str.cma Piplet.cma
     echo "Bye"
 
 else
-    ocamlc -I _build/src unix.cma str.cma Piplet.cma $*
+    ocamlc -I _build/lib unix.cma str.cma Piplet.cma $*
 fi
