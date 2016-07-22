@@ -24,6 +24,12 @@ let print_command cmd = print_string (command_to_string cmd)
 let open_execution_channel  = Unix.open_process_in
 let close_execution_channel = Unix.close_process_in
 
+let perform_execution str =
+  let chan = open_execution_channel str in
+  let rest = PipChannel.in_to_string chan in
+  let () = ignore (close_execution_channel chan) in
+  rest
+
 let flag name value = (name, Some value)
 let param name = (name, None)
 
@@ -32,3 +38,17 @@ let make_command ?(flags = []) name args = {
 ; middle = flags
 ; tail   = args
 }
+
+let exec cmd =
+  command_to_string cmd
+  |> perform_execution
+
+let exec_string = perform_execution
+
+module Shell =
+struct
+
+  let echo output =
+    make_command "echo" [("\""^output^"\"")]
+
+end
