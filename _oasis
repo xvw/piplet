@@ -14,5 +14,6 @@ Library "Piplet"
   Modules: Piplet
   InternalModules:
     PipRegex,
+    PipChannel,
     PipBash
   BuildDepends: unix, str

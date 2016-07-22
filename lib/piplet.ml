@@ -1,2 +1,3 @@
-module Regex = PipRegex
-module Bash  = PipBash
+module Regex   = PipRegex
+module Channel = PipChannel
+module Bash    = PipBash
