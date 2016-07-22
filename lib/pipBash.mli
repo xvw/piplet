@@ -8,12 +8,12 @@ val flag         : string -> string -> flag
 val param        : string -> flag
 val make_command : ?flags:flag list -> string -> string list -> command
 
-val exec         : command -> string
+val exec         : command -> string list -> string
 val exec_string  : string -> string
 
 module Shell :
 sig
 
-  val echo : string -> command
+  val echo : command
 
 end
