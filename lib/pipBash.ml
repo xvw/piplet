@@ -39,10 +39,12 @@ let make_command ?(flags = []) name args = {
 ; tail   = args
 }
 
-let exec cmd params =
-  let c = {cmd with tail = (cmd.tail @ params)} in
-  command_to_string c
-  |> perform_execution
+let exec ?(flags = []) cmd params =
+  let c = {
+    cmd with
+    middle = (cmd.middle @ flags)
+  ; tail   = (cmd.tail @ params)
+  } in  perform_execution (command_to_string c)
 
 let exec_string = perform_execution
 
@@ -50,5 +52,7 @@ module Shell =
 struct
 
   let echo = make_command "echo" []
+  let cat  = make_command "cat"  []
+  let ls   = make_command "ls" []
 
 end
