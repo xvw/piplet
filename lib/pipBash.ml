@@ -1,3 +1,5 @@
+open Pip
+
 type flag = (string * string option)
 
 type command = {

@@ -1,3 +1,5 @@
+open Pip
+
 type regex = string
 type source = string
 

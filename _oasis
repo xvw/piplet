@@ -13,7 +13,10 @@ Library "Piplet"
   Path: lib/
   Modules: Piplet
   InternalModules:
+    Pip,
+    PipMake,
     PipRegex,
     PipChannel,
+    PipParser,
     PipBash
   BuildDepends: unix, str

@@ -1,3 +1,5 @@
+open Pip
+
 let in_to_lines chan =
   let rec lines acc =
     try lines ((input_line chan) :: acc)
