@@ -13,8 +13,8 @@ Library "Piplet"
   Path: lib/
   Modules: Piplet
   InternalModules:
-    Pip,
     PipMake,
+    Pip,
     PipRegex,
     PipChannel,
     PipParser,
