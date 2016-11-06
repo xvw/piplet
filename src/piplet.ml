@@ -20,3 +20,4 @@
 *)
 
 module Cmd = PipCmd
+include Pip

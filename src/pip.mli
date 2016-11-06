@@ -19,5 +19,13 @@
  *
 *)
 
-open Pip
+(** {2 Process redirection} *)
 
+val open_process  : string -> in_channel
+val close_process : in_channel -> Unix.process_status
+
+
+(** {2 Channel redirection} *)
+
+val chan_to_lines  : ?close:bool -> in_channel -> string list
+val chan_to_string : ?close:bool -> in_channel -> string 

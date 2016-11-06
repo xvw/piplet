@@ -19,5 +19,24 @@
  *
 *)
 
-open Pip
+let open_process  = Unix.open_process_in
+let close_process = Unix.close_process_in
+
+let chan_to_lines ?(close=true) chan =
+  let rec aux acc =
+    try aux ((input_line chan) :: acc)
+    with End_of_file -> List.rev acc
+  in
+  let res = aux [] in
+  if close then ignore (close_process chan);
+  res
+
+let chan_to_string ?(close=true) chan =
+  let rec aux acc =
+    try aux (Printf.sprintf "%s%c" acc (input_char chan))
+    with End_of_file -> acc
+  in
+  let res = aux "" in
+  if close then ignore (close_process chan);
+  res
 
