@@ -40,3 +40,11 @@ let chan_to_string ?(close=true) chan =
   if close then ignore (close_process chan);
   res
 
+let perform f process =
+  process
+  |> open_process
+  |> f
+
+let process_to_lines  = perform chan_to_lines
+let process_to_string = perform chan_to_string
+

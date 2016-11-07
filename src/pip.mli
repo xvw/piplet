@@ -29,3 +29,8 @@ val close_process : in_channel -> Unix.process_status
 
 val chan_to_lines  : ?close:bool -> in_channel -> string list
 val chan_to_string : ?close:bool -> in_channel -> string 
+
+(** {2 Process exection } *)
+  
+val process_to_lines  : string -> string list
+val process_to_string : string -> string 
