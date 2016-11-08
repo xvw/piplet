@@ -22,29 +22,24 @@
 let open_process  = Unix.open_process_in
 let close_process = Unix.close_process_in
 
+let chan_coersion f empty close chan =
+  let res = f empty  in
+  if close then ignore (close_process chan);
+  res
+
 let chan_to_lines ?(close=true) chan =
   let rec aux acc =
     try aux ((input_line chan) :: acc)
     with End_of_file -> List.rev acc
-  in
-  let res = aux [] in
-  if close then ignore (close_process chan);
-  res
+  in chan_coersion aux [] close chan
 
 let chan_to_string ?(close=true) chan =
   let rec aux acc =
     try aux (Printf.sprintf "%s%c" acc (input_char chan))
     with End_of_file -> acc
-  in
-  let res = aux "" in
-  if close then ignore (close_process chan);
-  res
+  in chan_coersion aux "" close chan
 
-let perform f process =
-  process
-  |> open_process
-  |> f
-
+let perform f process = f (open_process process)
 let process_to_lines  = perform chan_to_lines
 let process_to_string = perform chan_to_string
 
