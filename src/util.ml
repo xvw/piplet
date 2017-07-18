@@ -19,9 +19,36 @@
  *
  *)
 
-let () =
-  "xaviervdw@gmail.com"
-  |> Util.gravatar_of
-  |> print_endline
+type email = string
+type uri = string
+
+let tokenize value =
+  value
+  |> String.trim
+  |> String.lowercase_ascii
 
 
+let md5 value =
+  value
+  |> Digest.string
+  |> Digest.to_hex
+
+let gravatar_of
+      ?(default="identicon")
+      ?(force_default=false)
+      ?(rating="g")
+      ?(size=200)
+      email
+  =
+  let fd = if force_default then "&f=y" else "" in
+  let base = "https://www.gravatar.com/avatar/" in
+  let hash = md5 @@ tokenize @@ email in
+  Printf.sprintf
+    "%s%s?s=%d&d=%s&r=%s%s"
+    base
+    hash
+    size
+    default
+    rating
+    fd
+  

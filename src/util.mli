@@ -19,9 +19,22 @@
  *
  *)
 
-let () =
-  "xaviervdw@gmail.com"
-  |> Util.gravatar_of
-  |> print_endline
+type email = string
+type uri = string
 
 
+(** Apply trim and lowercase to a string *)
+val tokenize: string -> string
+
+(** Hash a string into md5 *)
+val md5: string -> string 
+
+(** Returns the url of a gravatar for an email *)
+val gravatar_of:
+  ?default:string
+  -> ?force_default:bool
+  -> ?rating:string
+  -> ?size:int
+  -> email
+  -> uri
+  
