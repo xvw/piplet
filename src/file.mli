@@ -25,6 +25,7 @@ type name = string
 type content = string
 type line = string
 type chmod = int
+type extension = string
 
 (** Returns the content of a file into a Byte *)
 val read : name -> content
@@ -43,3 +44,6 @@ val remove : name -> unit
 
 (** Get the basename of a file *)
 val basename: name -> string
+
+(** Check if a file has an extension *)
+val has_extension: name -> extension -> bool

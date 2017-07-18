@@ -24,6 +24,7 @@ type name = string
 type content = string
 type line = string
 type chmod = int
+type extension = string
 
 let read filename =
   filename
@@ -56,3 +57,7 @@ let basename filename =
   filename
   |> Filename.basename
   |> Filename.chop_extension
+
+let has_extension filename extension =
+  let e = Filename.extension filename in
+  e = extension
