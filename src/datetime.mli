@@ -24,33 +24,6 @@
 
 type t
 
-
-(** Create seconds *)
-val second : float -> t
-
-(** Create minuts *)
-val minut : float -> t
-
-(** Create hour *)
-val hour : float -> t
-
-(** Create day *)
-val day : float -> t
-
-(** Create Week *)
-val week : float -> t
-
-(** Extract the data of a Datetime.t *)
-val unwrap: t -> ([`Sec | `Min | `Hour | `Day | `Week ] * float)
-
-(** map on Datetime.t *)
-val map : (float -> float) -> t -> t
-
-
-(** Converts Datetime.t to float (in seconds)*)
-val to_sec : t -> t
-
-
 (** Get the current time *)
 val now : unit -> t
 
