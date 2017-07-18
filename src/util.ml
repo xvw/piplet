@@ -51,4 +51,15 @@ let gravatar_of
     default
     rating
     fd
+
+let string_of_in_channel close channel =
+  let length = in_channel_length channel in
+  let result = Bytes.create length in
+  let () = really_input channel result 0 length in
+  let _ = close channel in
+  Bytes.to_string result
   
+let run command =
+  command
+  |> Unix.open_process_in
+  |> string_of_in_channel (Unix.close_process_in)

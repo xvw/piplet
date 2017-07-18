@@ -26,12 +26,9 @@ type line = string
 type chmod = int
 
 let read filename =
-  let channel = open_in filename in
-  let length = in_channel_length channel in
-  let result = Bytes.create length in
-  let () = really_input channel result 0 length in
-  let () = close_in channel in
-  Bytes.to_string result
+  filename
+  |> open_in
+  |> Util.string_of_in_channel close_in
 
 let read_lines filename =
   filename
