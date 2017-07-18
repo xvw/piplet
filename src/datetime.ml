@@ -30,7 +30,6 @@ let of_tm value =
 let now = Unix.time
 let to_tm = Unix.localtime
 
-
 let to_rfc822 value =
   let t = to_tm value in
   let day =
@@ -51,4 +50,3 @@ let to_rfc822 value =
     (t.Unix.tm_hour)
     (t.Unix.tm_min)
     (t.Unix.tm_sec)
-
