@@ -20,15 +20,62 @@
  *)
 
 
-type t = float
+type t =
+  | Sec of float
+  | Min of float
+  | Hour of float
+  | Day of float
+  | Week of float
+
+let unwrap = function
+  | Sec x  -> ` Sec, x
+  | Min x  -> `Min, x
+  | Hour x -> `Hour, x
+  | Day x  -> `Day, x
+  | Week x -> `Week, x
+
+let to_sec = function
+  | Sec x  -> Sec x
+  | Min x  -> Sec (x *. 60.)
+  | Hour x -> Sec (x *. 60. *. 60.)
+  | Day x  -> Sec (x *. 60. *. 60. *. 24.)
+  | Week x -> Sec (x *. 60. *. 60. *. 24. *. 7.)
+
+
+let second x = Sec x
+let minut x = Min x
+let hour x = Hour x
+let day x = Day x
+let week x = Week x
+
+let fun_of = function
+  | `Sec -> second
+  | `Min -> minut
+  | `Hour -> hour
+  | `Day -> day
+  | `Week -> week
+
+let map f value =
+  let (kind, v) = unwrap value in
+  let g = fun_of kind in
+  g (f v)
 
 let of_tm value =
   value
   |> Unix.mktime
   |> fst
+  |> second
 
-let now = Unix.time
-let to_tm = Unix.localtime
+let now () =
+  Unix.time ()
+  |> second
+  
+let to_tm value =
+  value
+  |> to_sec
+  |> unwrap
+  |> snd
+  |> Unix.localtime
 
 
 let to_rfc822 value =
@@ -51,3 +98,8 @@ let to_rfc822 value =
     (t.Unix.tm_hour)
     (t.Unix.tm_min)
     (t.Unix.tm_sec)
+
+
+
+
+
