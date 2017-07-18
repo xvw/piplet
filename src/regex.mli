@@ -19,7 +19,20 @@
  *
  *)
 
-let () =
-  "src/main.ml"
-  |> File.read
-  |> print_endline
+(** The module provides some helper to use regex *)
+
+type pattern = string
+type source = string
+type replacer = string
+
+(** Split source with a pattern *)
+val split: pattern -> source -> string list
+
+(** Replace [pattern] with [replacer] from [source]*)
+val replace: ?all:bool -> pattern -> replacer -> source -> string
+
+(** Remove the [pattern] of the [source] *)
+val purge: pattern -> source -> string
+
+(** Minimize (whitespace etc) of a string *)
+val minimize: source -> string

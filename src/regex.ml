@@ -19,7 +19,17 @@
  *
  *)
 
-let () =
-  "src/main.ml"
-  |> File.read
-  |> print_endline
+type pattern = string
+type source = string
+type replacer = string
+
+let split pattern = Str.split @@ Str.regexp pattern
+                  
+let replace ?(all=true) pattern =
+  let f = if all then Str.global_replace else Str.replace_first in
+  f @@ Str.regexp pattern
+
+let purge pattern =
+  replace ~all:true pattern ""
+
+let minimize = purge "\n"

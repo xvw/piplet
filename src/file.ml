@@ -32,3 +32,30 @@ let read filename =
   let () = really_input channel result 0 length in
   let () = close_in channel in
   Bytes.to_string result
+
+let read_lines filename =
+  filename
+  |> read
+  |> Regex.split "\n"
+
+let write filename content =
+  let channel = open_out filename in
+  let () = output_string channel content in
+  close_out channel
+
+let append ?(chmod=0o664) filename content =
+  let channel =
+    open_out_gen
+      [Open_rdonly; Open_append; Open_creat; Open_text]
+      chmod
+      filename
+  in
+  let () = output_string channel content in
+  close_out channel
+
+let remove = Sys.remove
+
+let basename filename =
+  filename
+  |> Filename.basename
+  |> Filename.chop_extension
