@@ -22,8 +22,12 @@
 type t =
   | Atom of string
   | Node of t list
+  | String of string
 
 exception Malformed_sexp of int
+
+let add_char =
+  Printf.sprintf "%s%c"
 
 let check length i =
   if length = i
@@ -43,7 +47,16 @@ let parse_atom sexp length =
     else 
       match sexp.[i] with
       | ' ' | '\t' | '\n' | ')' | '(' -> (Atom acc, i)
-      | x -> parse (Printf.sprintf "%s%c" acc x) (succ i)
+      | x -> parse (add_char acc x) (succ i)
+  in parse ""
+
+let parse_string sexp length =
+  let rec parse acc i =
+    if length = i then (String acc, i)
+    else
+      match sexp.[i] with
+      | '"' -> (String acc, succ i)
+      | x -> parse (add_char acc x) (succ i)
   in parse ""
 
 let parse_node sexp length i =
@@ -58,6 +71,10 @@ let parse_node sexp length i =
         | [] | [Atom ""] -> acc 
         | _ -> (Node node) :: acc
       in parse new_acc (abstract_trim sexp length new_i)
+    | '"' ->
+      let (string, new_i) = parse_string sexp length (succ i) in
+      let new_acc = string :: acc in
+      parse new_acc (abstract_trim sexp length new_i)
     | _ ->
       let (atom, new_i) = parse_atom sexp length i in
       let new_acc =
@@ -74,6 +91,7 @@ let of_string input =
   let len = String.length sexp in
   match sexp.[0] with
   | '(' -> fst (parse_node sexp len 1)
+  | '"' -> fst (parse_string sexp len 1)
   | _ -> fst (parse_atom sexp len 0)
 
 
@@ -83,17 +101,21 @@ let of_file filename =
   |> of_string
 
 
+let string_to_real_string x = "\"" ^ x ^ "\""
 let atom_to_string x = " " ^ x ^ " "
 let node_to_string x = " (" ^ x ^ ") "
 let rec sexp_list_to_string acc = function
   | [] -> acc
   | Atom x :: xs ->
     sexp_list_to_string (acc ^ (atom_to_string x)) xs
+  | String x :: xs ->
+    sexp_list_to_string (acc ^ (string_to_real_string x)) xs
   | Node x :: xs ->
     let temp = sexp_list_to_string "" x in
     sexp_list_to_string (acc ^ (node_to_string temp)) xs
 
 let to_string = function
+  | String x -> string_to_real_string x
   | Atom x -> atom_to_string x
   | Node x ->
     sexp_list_to_string "" x

@@ -24,6 +24,7 @@
 type t =
   | Atom of string
   | Node of t list
+  | String of string
 
 exception Malformed_sexp of int
 
