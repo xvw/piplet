@@ -24,7 +24,9 @@ type t =
   | Node of t list
   | String of string
 
-exception Malformed_sexp of int
+let atom x = Atom x
+let node x = Node x
+let string x = String x
 
 let add_char =
   Printf.sprintf "%s%c"

@@ -26,7 +26,14 @@ type t =
   | Node of t list
   | String of string
 
-exception Malformed_sexp of int
+(** Create a node *)
+val node : t list -> t
+
+(** Create an atom *)
+val atom : string -> t
+
+(** Create a string *)
+val string : string -> t
 
 (** Convert a string to a Sexp *)
 val of_string : string -> t
