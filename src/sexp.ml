@@ -48,22 +48,23 @@ let parse_atom sexp length =
 
 let parse_node sexp length i =
   let rec parse acc i =
-    let _ = print_int i in
     let _ = check length i in
     match sexp.[i] with
     | ')' -> (List.rev acc, succ i)
     | '(' ->
       let (node, new_i) = parse [] (succ i) in
-      let new_acc = (Node node) :: acc in
-      parse new_acc (abstract_trim sexp length new_i)
+      let new_acc =
+        match node with
+        | [] | [Atom ""] -> acc 
+        | _ -> (Node node) :: acc
+      in parse new_acc (abstract_trim sexp length new_i)
     | _ ->
       let (atom, new_i) = parse_atom sexp length i in
       let new_acc =
         match atom with
         | Atom "" -> acc
         | new_atom -> new_atom :: acc
-      in
-      parse new_acc (abstract_trim sexp length new_i)
+      in parse new_acc (abstract_trim sexp length new_i)
   in let (res, new_i) = parse [] i in
   (Node res, new_i)
   
@@ -74,3 +75,26 @@ let of_string input =
   match sexp.[0] with
   | '(' -> fst (parse_node sexp len 1)
   | _ -> fst (parse_atom sexp len 0)
+
+
+let of_file filename =
+  filename
+  |> File.read
+  |> of_string
+
+
+let atom_to_string x = " " ^ x ^ " "
+let node_to_string x = " (" ^ x ^ ") "
+let rec sexp_list_to_string acc = function
+  | [] -> acc
+  | Atom x :: xs ->
+    sexp_list_to_string (acc ^ (atom_to_string x)) xs
+  | Node x :: xs ->
+    let temp = sexp_list_to_string "" x in
+    sexp_list_to_string (acc ^ (node_to_string temp)) xs
+
+let to_string = function
+  | Atom x -> atom_to_string x
+  | Node x ->
+    sexp_list_to_string "" x
+    |> node_to_string

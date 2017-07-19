@@ -19,6 +19,8 @@
  *
  *)
 
+(** A cheap approach of Sexp parsing... *)
+
 type t =
   | Atom of string
   | Node of t list
@@ -27,3 +29,9 @@ exception Malformed_sexp of int
 
 (** Convert a string to a Sexp *)
 val of_string : string -> t
+
+(** Convert a file into a Sexp *)
+val of_file: File.name -> t
+
+(** Convert a Sexp to a string *)
+val to_string: t -> string
