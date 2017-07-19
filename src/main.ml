@@ -19,10 +19,11 @@
  *
  *)
 
-module DT = Datetime
-module FL = File
-module SE = Sexp
-module CO = Color
 
-let () = ()
+
+let () =
+  if Array.length (Sys.argv) <> 2
+  then
+    Color.(c ~fg:red @@ "usage:" ^ Sys.argv.(0) ^" config.sexp")
+    |> print_endline
 
