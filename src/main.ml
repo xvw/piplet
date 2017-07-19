@@ -20,6 +20,11 @@
  *)
 
 
+module Util = Util
+module Datetime = Datetime
+module File = File
+module Sexp = Sexp
+
 
 let () =
   if Array.length (Sys.argv) <> 2

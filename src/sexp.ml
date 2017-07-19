@@ -29,10 +29,6 @@ exception Malformed_sexp of int
 let add_char =
   Printf.sprintf "%s%c"
 
-let check length i =
-  if length = i
-  then raise (Malformed_sexp i)
-
 let abstract_trim sexp length =
   let rec parse i =
     if length = i then i
@@ -41,12 +37,20 @@ let abstract_trim sexp length =
       | _ -> i
   in parse
 
+let to_eol sexp length =
+  let rec parse i =
+    if length = i then i
+    else match sexp.[i] with
+      | '\n' -> succ i
+      | _ -> parse (succ i)
+  in parse
+
 let parse_atom sexp length =
   let rec parse acc i =
     if length = i then (Atom acc, i)
     else 
       match sexp.[i] with
-      | ' ' | '\t' | '\n' | ')' | '(' -> (Atom acc, i)
+      | ' ' | '\t' | '\n' | ')' | '(' | ';' -> (Atom acc, i)
       | x -> parse (add_char acc x) (succ i)
   in parse ""
 
@@ -61,7 +65,6 @@ let parse_string sexp length =
 
 let parse_node sexp length i =
   let rec parse acc i =
-    let _ = check length i in
     match sexp.[i] with
     | ')' -> (List.rev acc, succ i)
     | '(' ->
@@ -71,6 +74,7 @@ let parse_node sexp length i =
         | [] | [Atom ""] -> acc 
         | _ -> (Node node) :: acc
       in parse new_acc (abstract_trim sexp length new_i)
+    | ';' -> parse acc (to_eol sexp length i)
     | '"' ->
       let (string, new_i) = parse_string sexp length (succ i) in
       let new_acc = string :: acc in
@@ -84,15 +88,19 @@ let parse_node sexp length i =
       in parse new_acc (abstract_trim sexp length new_i)
   in let (res, new_i) = parse [] i in
   (Node res, new_i)
-  
+
 
 let of_string input =
   let sexp = String.trim input in
   let len = String.length sexp in
-  match sexp.[0] with
-  | '(' -> fst (parse_node sexp len 1)
-  | '"' -> fst (parse_string sexp len 1)
-  | _ -> fst (parse_atom sexp len 0)
+  let rec parse i =
+    match sexp.[i] with
+    | '(' -> fst (parse_node sexp len (succ i))
+    | '"' -> fst (parse_string sexp len (succ i))
+    | ';' -> parse (to_eol sexp len i)
+    | ' ' | '\t' | '\n' -> parse (succ i)
+    | _ -> fst (parse_atom sexp len 0)
+  in parse 0
 
 
 let of_file filename =

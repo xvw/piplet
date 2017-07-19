@@ -1,3 +1,9 @@
+;; Tst kslqdmlksqd
+;; Lapin
+
+
 (:article (
-  :keywords (a b c)
+  ;; This is a commentary
+  :keywords (a b c) ;; for the keywords
   :description "This is a test !"))
+
