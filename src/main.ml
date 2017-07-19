@@ -19,9 +19,10 @@
  *
  *)
 
-let () =
-  "xaviervdw@gmail.com"
-  |> Util.gravatar_of
-  |> print_endline
+module DT = Datetime
+module FL = File
+module SE = Sexp
+module CO = Color
 
+let () = ()
 

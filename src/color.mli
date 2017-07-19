@@ -18,3 +18,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *)
+
+(** This module provides some ANSI color for the terminal *)
+
+type color
+type clean_color
+type text = string
+type colorized_text = string
+
+(** {1 Color list} *)
+
+val reset : clean_color
+val black : color
+val red : color
+val green : color
+val yellow : color
+val blue : color
+val magenta : color
+val cyan : color
+val white : color
+
+(** Returns a colorized version of the text *)
+val colorize: ?fg:color -> ?bg:color-> text -> colorized_text
+val c: ?fg:color -> ?bg:color-> text -> colorized_text  
