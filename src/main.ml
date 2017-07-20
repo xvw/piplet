@@ -25,6 +25,7 @@ module Datetime = Datetime
 module File = File
 module Sexp = Sexp
 module Contributor = Contributor
+module Git = Git
 
 
 let () =
