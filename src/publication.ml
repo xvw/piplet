@@ -19,23 +19,19 @@
  *
  *)
 
+type reference = {
+  name: string
+; url: string
+; authors: string list
+; year: int
+}
 
-module Util = Util
-module Datetime = Datetime
-module Sexp = Sexp
-module Contributor = Contributor
-module Publication = Publication
-
-
-let () =
-  if Array.length (Sys.argv) <> 2
-  then
-    Color.(c ~fg:red @@ "usage:" ^ Sys.argv.(0) ^" config.sexp")
-    |> print_endline
-  else
-    Sys.argv.(1)
-    |> Sexp.of_file
-    |> Sexp.to_string
-    |> Color.c ~fg:Color.green
-    |> print_endline
-
+type t = {
+  title: string
+; abstract: string
+; tags: string list
+; permalink: string
+; draft: bool
+; date: float
+; contributors: Contributor.t list
+}
