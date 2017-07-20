@@ -18,3 +18,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *)
+
+(** The module provides some functions to deal with git repository *)
