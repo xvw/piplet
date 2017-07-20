@@ -22,7 +22,6 @@
 
 module Util = Util
 module Datetime = Datetime
-module File = File
 module Sexp = Sexp
 module Contributor = Contributor
 module Git = Git
@@ -32,5 +31,11 @@ let () =
   if Array.length (Sys.argv) <> 2
   then
     Color.(c ~fg:red @@ "usage:" ^ Sys.argv.(0) ^" config.sexp")
+    |> print_endline
+  else
+    Sys.argv.(1)
+    |> Sexp.of_file
+    |> Sexp.to_string
+    |> Color.c ~fg:Color.green
     |> print_endline
 
