@@ -61,3 +61,9 @@ let basename filename =
 let has_extension filename extension =
   let e = Filename.extension filename in
   e = extension
+
+let mtime filename =
+  let stats = Unix.stat filename in
+  stats.Unix.st_mtime
+
+

@@ -47,3 +47,6 @@ val basename: name -> string
 
 (** Check if a file has an extension *)
 val has_extension: name -> extension -> bool
+
+(** Get the last modification date *)
+val mtime : name -> Datetime.t
