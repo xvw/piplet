@@ -45,3 +45,8 @@ val string_of_in_channel: (in_channel -> 'a) -> in_channel -> string
 (** Execute a command shell and returns the result in a string *)
 val run: string -> string
   
+(** Generate a seed *)
+val seed: string
+
+(** Generate an uniq separator (for regexp orelse *)
+val uniq_separator: string

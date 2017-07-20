@@ -25,6 +25,9 @@ type pattern = string
 type source = string
 type replacer = string
 
+(** An uniq separator ... *)
+val uniq_separator : pattern
+
 (** Split source with a pattern *)
 val split: pattern -> source -> string list
 

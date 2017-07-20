@@ -33,3 +33,6 @@ let purge pattern =
   replace ~all:true pattern ""
 
 let minimize = purge "\n"
+
+let uniq_separator =
+  Str.quote Util.uniq_separator
