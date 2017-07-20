@@ -22,7 +22,7 @@
 
 (** The module provides some tools to deal with Datetime *)
 
-type t
+type t = float
 
 (** Get the current time *)
 val now : unit -> t
