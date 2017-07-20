@@ -1,3 +1,0 @@
-(:blog
- (:target "dist/")
-)

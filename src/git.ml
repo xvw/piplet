@@ -19,3 +19,11 @@
  *
  *)
 
+type status =
+  | Modified of File.name
+  | Deleted of File.name
+  | Added of File.name
+  | Renamed of File.name * File.name
+  | Copied of File.name * File.name
+  | Updated of File.name
+  | Unknown of File.name
