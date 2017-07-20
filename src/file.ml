@@ -66,4 +66,13 @@ let mtime filename =
   let stats = Unix.stat filename in
   stats.Unix.st_mtime
 
-
+let contributors filename =
+  try 
+    "git log --format=\"%an"
+    ^ Util.uniq_separator
+    ^ "%ae\" "
+    ^ filename
+    ^ " | uniq"
+    |> Util.run_to_lines
+    |> List.map (Contributor.from_gitlog)
+  with _ -> []

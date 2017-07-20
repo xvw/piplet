@@ -50,3 +50,6 @@ val has_extension: name -> extension -> bool
 
 (** Get the last modification date *)
 val mtime : name -> Datetime.t
+
+(** Get the contributors list of a file *)
+val contributors: name -> Contributor.t list

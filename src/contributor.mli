@@ -31,3 +31,6 @@ type t = {
 
 (** Create an author *)
 val create: name -> email -> t
+
+(** Convert git log to contributor *)
+val from_gitlog : string -> t

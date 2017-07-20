@@ -24,6 +24,7 @@ module Util = Util
 module Datetime = Datetime
 module File = File
 module Sexp = Sexp
+module Contributor = Contributor
 
 
 let () =
