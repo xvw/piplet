@@ -28,9 +28,6 @@ let atom x = Atom x
 let node x = Node x
 let string x = String x
 
-let add_char =
-  Printf.sprintf "%s%c"
-
 let abstract_trim sexp length =
   let rec parse i =
     if length = i then i
@@ -53,7 +50,7 @@ let parse_atom sexp length =
     else 
       match sexp.[i] with
       | ' ' | '\t' | '\n' | ')' | '(' | ';' -> (Atom acc, i)
-      | x -> parse (add_char acc x) (succ i)
+      | x -> parse (Util.add_char acc x) (succ i)
   in parse ""
 
 let parse_string sexp length =
@@ -62,7 +59,7 @@ let parse_string sexp length =
     else
       match sexp.[i] with
       | '"' -> (String acc, succ i)
-      | x -> parse (add_char acc x) (succ i)
+      | x -> parse (Util.add_char acc x) (succ i)
   in parse ""
 
 let parse_node sexp length i =

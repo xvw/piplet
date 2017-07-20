@@ -22,6 +22,9 @@
 type email = string
 type uri = string
 
+let add_char =
+  Printf.sprintf "%s%c"
+
 let tokenize value =
   value
   |> String.trim
@@ -59,10 +62,25 @@ let string_of_in_channel close channel =
   let _ = close channel in
   Bytes.to_string result
   
-let run command =
-  command
-  |> Unix.open_process_in
-  |> string_of_in_channel (Unix.close_process_in)
+let run_to_string command =
+  let channel = Unix.open_process_in command in
+  let rec aux acc =
+    try aux (add_char acc (input_char channel))
+    with End_of_file -> acc
+  in
+  let result = aux "" in
+  let _ = Unix.close_process_in channel in
+  result
+
+let run_to_lines command =
+  let channel = Unix.open_process_in command in
+  let rec aux acc =
+    try aux ((input_line channel) :: acc)
+    with End_of_file -> List.rev acc
+  in
+  let result = aux [] in
+  let _ = Unix.close_process_in channel in
+  result
 
 let seed =
   Unix.gettimeofday ()

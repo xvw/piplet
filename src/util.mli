@@ -38,13 +38,19 @@ val gravatar_of:
   -> email
   -> uri
 
+(** Add a char to a string *)
+val add_char: string -> char -> string
+
 
 (** Converts an in_channel into a string *)
 val string_of_in_channel: (in_channel -> 'a) -> in_channel -> string
 
 (** Execute a command shell and returns the result in a string *)
-val run: string -> string
-  
+val run_to_string: string -> string
+
+(** Execute a command shell and returns the result in a string list *)
+val run_to_lines: string -> string list
+
 (** Generate a seed *)
 val seed: string
 
