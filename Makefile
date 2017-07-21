@@ -1,9 +1,13 @@
-main:
-	ocamlbuild -I src main.byte
-	cp main.byte example/build
+all: main
 
-top: main
-	ocaml -I _build/src unix.cma str.cma util.cmo regex.cmo datetime.cmo contributor.cmo file.cmo sexp.cmo color.cmo publication.cmo
+lib:
+	ocamlbuild -I src blog.cma
+
+main: lib
+	ocamlbuild -I src main.byte
+
+toplevel: lib
+	ocaml -I _build/src blog.cma
 
 clean:
 	rm -rf *.byte
