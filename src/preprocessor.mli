@@ -22,4 +22,7 @@
 
  (** The module provides functions to pre-process some text files *)
 
-type macro
+type input = string 
+type output = string
+type macro = (input * output)
+type processor = (input -> output)

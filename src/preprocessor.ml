@@ -19,5 +19,7 @@
  *
  *)
 
- type macro = 
-  | Macro of (string * string)
+type input = string 
+type output = string
+type macro = (input * output)
+type processor = (input -> output)
