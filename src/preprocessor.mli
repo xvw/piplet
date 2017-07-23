@@ -18,3 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *)
+
+
+ (** The module provides functions to pre-process some text files *)
+
+type macro
