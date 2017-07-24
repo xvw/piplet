@@ -38,4 +38,3 @@ let () =
     |> Sexp.to_string
     |> Color.c ~fg:Color.green
     |> print_endline
-
