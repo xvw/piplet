@@ -82,7 +82,12 @@ let contributors filename =
 
 let exists = Sys.file_exists
 
-
 let create ?(chmod=0o777) name content =
   if (exists name) then raise (Already_exists name)
   else append ~chmod:chmod name content
+
+let overwrite ?(chmod=0o777) name content =
+  let () =
+    try remove name
+    with _ -> ()
+  in create ~chmod name content

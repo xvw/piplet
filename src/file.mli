@@ -41,8 +41,13 @@ val write: name -> content -> unit
 (** Check if a file exists *)
 val exists: name -> bool
 
-(** [create name content] create a new file *)
+(** [create name content] create a new file. Raise Already_exists(filename)
+    if the file already exists.
+*)
 val create: ?chmod:chmod -> name -> content -> unit
+
+(** Same of [create] but doesn't raise any exception. Overwrite the file. *)
+val overwrite: ?chmod:chmod -> name -> content -> unit
 
 (** Append content into a file *)
 val append: ?chmod:chmod -> name -> content -> unit
@@ -61,4 +66,3 @@ val mtime : name -> Datetime.t
 
 (** Get the contributors list of a file *)
 val contributors: name -> Contributor.t list
-
