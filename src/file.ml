@@ -20,11 +20,14 @@
  *)
 
 
+
 type name = string
 type content = string
 type line = string
 type chmod = int
 type extension = string
+
+exception Already_exists of name
 
 let read filename =
   filename
@@ -76,3 +79,10 @@ let contributors filename =
     |> Util.run_to_lines
     |> List.map (Contributor.from_gitlog)
   with _ -> []
+
+let exists = Sys.file_exists
+
+
+let create ?(chmod=0o777) name content =
+  if (exists name) then raise (Already_exists name)
+  else append ~chmod:chmod name content
