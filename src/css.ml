@@ -65,16 +65,25 @@ let builder_to_string =
        | External e -> acc ^ "|_external("^e^")\n")
     ""
 
-let concat acc elt =
-  acc ^ " " ^ elt
+
+let minimize env elt = elt
+  
+
+let concat env acc elt =
+  acc ^ " " ^ (minimize env elt)
 
 let produce =
-  let environement = Hashtbl.create 10 in
+  let env = Hashtbl.create 10 in
   List.fold_left (fun acc fragment ->
       match fragment with
-      | File file -> let txt = File.read file in concat acc txt
-      | Plain txt -> concat acc txt
+      | File file -> let txt = File.read file in concat env acc txt
+      | Plain txt -> concat env acc txt
       | External _ -> raise (Util.Not_implemented "External :'(")
     )
     ""
-    
+
+let create filename =
+  filename
+  |> builder_of_file
+  |> produce
+   
