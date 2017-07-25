@@ -65,6 +65,16 @@ let builder_to_string =
        | External e -> acc ^ "|_external("^e^")\n")
     ""
 
-let produce _ =
-  let _ = assert ("todo" = "..") in
-  ""
+let concat acc elt =
+  acc ^ " " ^ elt
+
+let produce =
+  let environement = Hashtbl.create 10 in
+  List.fold_left (fun acc fragment ->
+      match fragment with
+      | File file -> let txt = File.read file in concat acc txt
+      | Plain txt -> concat acc txt
+      | External _ -> raise (Util.Not_implemented "External :'(")
+    )
+    ""
+    
