@@ -19,6 +19,8 @@
  *
  *)
 
+exception Not_implemented of string
+
 type email = string
 type uri = string
 
