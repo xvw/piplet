@@ -20,6 +20,7 @@
  *)
 
 exception Malformed_sexpbuilder of string
+exception Malformed_css of string
 
 type fragments =
   | File of File.name
@@ -66,19 +67,49 @@ let builder_to_string =
     ""
 
 
-let minimize env elt = elt
+let remove_comments str =
+  let res = Str.(full_split (regexp "/\\*\\|\\*/") str) in
+  List.fold_left (
+    fun (flag, str) elt ->
+      match (flag, elt) with
+      | (true, Str.Delim "*/") -> (false, str)
+      | (true, _) -> (true, str)
+      | (false, Str.Delim "/*") -> (true, str)
+      | (false, Str.Text block) -> (false, str ^ block)
+      | (_, Str.Delim x) -> raise (Malformed_css x)
+  ) (false, "") res
+  |> snd
+
+
+let variables env elt = elt
+
+let minimize elt =
+  elt
+  |> Regex.minimize
+  |> remove_comments
+  |> Regex.purge "\t"
+
+
+let concat acc elt =
+  acc ^ " " ^ elt
   
 
-let concat env acc elt =
-  acc ^ " " ^ (minimize env elt)
+let concat_with_env env acc elt =
+  elt
+  |> minimize
+  |> variables env
+  |> concat acc
 
 let produce =
   let env = Hashtbl.create 10 in
   List.fold_left (fun acc fragment ->
       match fragment with
-      | File file -> let txt = File.read file in concat env acc txt
-      | Plain txt -> concat env acc txt
-      | External _ -> raise (Util.Not_implemented "External :'(")
+      | File file ->
+        let txt = File.read file in
+        concat_with_env env acc txt
+      | Plain txt -> concat_with_env env acc txt
+      | External _ ->
+        raise (Util.Not_implemented "External :'(")
     )
     ""
 
@@ -86,4 +117,5 @@ let create filename =
   filename
   |> builder_of_file
   |> produce
+  |> String.trim
    
