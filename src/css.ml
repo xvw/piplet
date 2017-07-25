@@ -19,8 +19,12 @@
  *
  *)
 
+let let_regexp = Str.regexp "@let \\([A-Za-z]+\\)(\\([^()]+\\))"
+let comment_regexp = Str.regexp "/\\*\\|\\*/"
+
 exception Malformed_sexpbuilder of string
 exception Malformed_css of string
+exception Unbound_variable of string
 
 type fragments =
   | File of File.name
@@ -68,7 +72,7 @@ let builder_to_string =
 
 
 let remove_comments str =
-  let res = Str.(full_split (regexp "/\\*\\|\\*/") str) in
+  let res = Str.full_split comment_regexp str in
   List.fold_left (
     fun (flag, str) elt ->
       match (flag, elt) with
@@ -81,7 +85,23 @@ let remove_comments str =
   |> snd
 
 
-let variables env elt = elt
+let set_variables env elt =
+  Str.(
+    global_substitute
+      let_regexp
+      (fun result ->
+         let key = matched_group 1 result in
+         let value = matched_group 2 result in
+         let _ = Hashtbl.add env key value in
+         replace_first let_regexp "" result
+      )
+      elt
+  )
+
+let replace_variables env elt =
+  let _ = Hashtbl.iter (Printf.printf "\n%s:%s\n") env in
+  let _ = Hashtbl.clear env in
+  elt
 
 let minimize elt =
   elt
@@ -97,11 +117,12 @@ let concat acc elt =
 let concat_with_env env acc elt =
   elt
   |> minimize
-  |> variables env
+  |> set_variables env
+  |> replace_variables env
   |> concat acc
 
 let produce =
-  let env = Hashtbl.create 10 in
+  let env = Hashtbl.create 1 in
   List.fold_left (fun acc fragment ->
       match fragment with
       | File file ->

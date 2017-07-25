@@ -23,6 +23,7 @@
 
 exception Malformed_sexpbuilder of string
 exception Malformed_css of string
+exception Unbound_variable of string
 
 type fragments
 type builder
