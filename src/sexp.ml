@@ -127,12 +127,3 @@ let to_string = function
   | Node x ->
     sexp_list_to_string "" x
     |> node_to_string
-
-
-module type SEXP_CONV =
-sig
-  type base
-  val from_sexp : t -> base
-  val to_sexp: base -> t
-end
-

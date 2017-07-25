@@ -43,12 +43,3 @@ val of_file: File.name -> t
 
 (** Convert a Sexp to a string *)
 val to_string: t -> string
-
-(** Provide function to serialize/deserialize into sexp *)
-module type SEXP_CONV =
-sig
-  type base
-  val from_sexp : t -> base
-  val to_sexp: base -> t
-end
-
