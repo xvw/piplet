@@ -50,8 +50,44 @@ let empty = {
 ; references = []
 }
 
-let perform_extraction record _ =
+let parse_references record elt =
+  let open Sexp in
   record
+
+let parse_tags record elt =
+  let open Sexp in
+  match elt with
+  | Atom tag | String tag ->
+    { record with
+      tags = ((Util.tokenize tag) :: record.tags)
+    }
+  | x ->
+    raise (Util.Malformed_sexp (
+        "Publication", "No idea what is : " ^ Sexp.to_string x)) 
+  
+
+let perform_extraction record elt =
+  let open Sexp in 
+  match elt with 
+  | Node [Atom "title"; String title] ->
+    { record with title = title }
+  | Node [Atom "abstract"; String abstract] ->
+    { record with abstract = abstract }
+  | Node [Atom "permalink"; String permalink] ->
+    { record with permalink = permalink }
+  | Node [Atom "file"; String file] ->
+    { record with file = file }
+  | Node [Atom "draft"; Atom (("true" | "false") as flag)] ->
+    { record with draft = (flag <> "false") }
+  | Node [Atom "date"; String date] ->
+    { record with date = Datetime.of_blog_format date }
+  | Node [Atom "references"; Node references] ->
+    List.fold_left parse_references record references
+  | Node [Atom "tags"; Node tags] ->
+    List.fold_left parse_tags record tags
+  | x ->
+    raise (Util.Malformed_sexp (
+        "Publication", "No idea what is : " ^ Sexp.to_string x))
 
 let t_of_sexp = function
   | Sexp.(Node [Atom "publication"; Node li]) ->
