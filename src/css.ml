@@ -23,8 +23,7 @@ let let_regexp = Str.regexp "@let \\([A-Za-z]+\\)(\\([^()]+\\))"
 let get_regexp = Str.regexp "@get(\\([A-Za-z]+\\))"
 let comment_regexp = Str.regexp "/\\*\\|\\*/"
 let space_regexp = Str.regexp " +"
-
-exception Malformed_sexpbuilder of string
+    
 exception Malformed_css of string
 
 type fragments =
@@ -45,17 +44,16 @@ let each_nodes elt acc =
   | Node [Atom "external"; String str] -> (External str) :: acc 
   | _ ->
     raise (
-      Malformed_sexpbuilder (
-        "this is invalid: " ^ Sexp.to_string elt))
+      Util.Malformed_sexp (
+        ("Css", "this is invalid: " ^ Sexp.to_string elt)))
 
 let builder_of_sexp = function
   | Sexp.Node [Sexp.Atom "css_builder"; Sexp.Node li] ->
     List.fold_right each_nodes li []
   | _ ->
     raise (
-      Malformed_sexpbuilder
-        "you should have: (css_builder (...))"
-    )
+      Util.Malformed_sexp
+        ("Css", "you should have: (css_builder (...))"))
 
 let builder_of_file file =
   file

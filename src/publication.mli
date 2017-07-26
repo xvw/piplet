@@ -41,7 +41,7 @@ type t = {
 }
 
 (** Convert a Sexp to a reference *)
-val reference_of_sexp : Sexp.t -> reference
+(* val reference_of_sexp : Sexp.t -> reference *)
 
 (** Convert a Sexp to a publication *)
 val t_of_sexp : Sexp.t -> t

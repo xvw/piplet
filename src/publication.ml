@@ -33,8 +33,35 @@ type t = {
 ; file: File.name
 ; permalink: File.name
 ; draft: bool
-; date: float
+; date: Datetime.t
 ; contributors: Contributor.t list
 ; references: reference list
 }
+
+let empty = {
+  title = "Unknown"
+; abstract = "Unknown"
+; tags = []
+; file = ""
+; permalink = ""
+; draft = false
+; date = Datetime.now ()
+; contributors = []
+; references = []
+}
+
+let perform_extraction record _ =
+  record
+
+let t_of_sexp = function
+  | Sexp.(Node [Atom "publication"; Node li]) ->
+    List.fold_left perform_extraction empty li
+  | _ -> raise (
+      Util.Malformed_sexp (
+        "Publication", "You should have : (publication (...))"))
+
+let of_file filename =
+  filename
+  |> Sexp.of_file
+  |> t_of_sexp
 

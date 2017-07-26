@@ -20,6 +20,7 @@
  *)
 
 exception Not_implemented of string
+exception Malformed_sexp of (string * string)
 
 type email = string
 type uri = string

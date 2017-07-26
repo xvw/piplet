@@ -21,7 +21,6 @@
 
 (** Module to produce CSS *)
 
-exception Malformed_sexpbuilder of string
 exception Malformed_css of string
 
 type fragments
