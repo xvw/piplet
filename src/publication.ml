@@ -26,6 +26,13 @@ type reference = {
 ; year: int
 }
 
+let empty_ref = {
+  name = ""
+; url = ""
+; authors = []
+; year = 0
+}
+
 type t = {
   title: string
 ; abstract: string
@@ -50,9 +57,41 @@ let empty = {
 ; references = []
 }
 
+let specific_reference record elt =
+  let open Sexp in
+  match elt with
+  | Node [Atom "name"; String name] ->
+    { record with name = name}
+  | Node [Atom "url"; String url] ->
+    { record with url = url}
+  | Node [Atom "year"; (Atom year | String year)] ->
+    { record with year = int_of_string year}
+  | Node [Atom "authors"; Node authors] ->
+    let authors =
+      List.fold_left
+        (fun acc author ->
+           match author with
+           | String name -> name :: acc
+           | x ->
+             raise (Util.Malformed_sexp (
+                 "Publication", "No idea what is : " ^ Sexp.to_string x))
+        )
+        record.authors
+        authors
+    in { record with authors = authors}
+  | x ->
+    raise (Util.Malformed_sexp (
+        "Publication", "No idea what is : " ^ Sexp.to_string x))
+
 let parse_references record elt =
   let open Sexp in
-  record
+  match elt with
+  | Node data ->
+    let a_ref = List.fold_left specific_reference empty_ref data in
+    { record with references = (a_ref :: record.references) }
+  | x ->
+    raise (Util.Malformed_sexp (
+        "Publication", "No idea what is : " ^ Sexp.to_string x))
 
 let parse_tags record elt =
   let open Sexp in
