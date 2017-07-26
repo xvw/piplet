@@ -20,11 +20,12 @@
  *)
 
 let let_regexp = Str.regexp "@let \\([A-Za-z]+\\)(\\([^()]+\\))"
+let get_regexp = Str.regexp "@get(\\([A-Za-z]+\\))"
 let comment_regexp = Str.regexp "/\\*\\|\\*/"
+let space_regexp = Str.regexp " +"
 
 exception Malformed_sexpbuilder of string
 exception Malformed_css of string
-exception Unbound_variable of string
 
 type fragments =
   | File of File.name
@@ -93,21 +94,28 @@ let set_variables env elt =
          let key = matched_group 1 result in
          let value = matched_group 2 result in
          let _ = Hashtbl.add env key value in
-         replace_first let_regexp "" result
+         ""
       )
       elt
   )
 
 let replace_variables env elt =
-  let _ = Hashtbl.iter (Printf.printf "\n%s:%s\n") env in
-  let _ = Hashtbl.clear env in
-  elt
+  Str.(
+    global_substitute
+      get_regexp
+      (fun result ->
+         let key = matched_group 1 result in
+         Hashtbl.find env key
+      )
+      elt
+  )
 
 let minimize elt =
   elt
-  |> Regex.minimize
+  |> Regex.replace "\n" " "
   |> remove_comments
-  |> Regex.purge "\t"
+  |> Regex.replace "\t" " "
+  |> Str.global_replace space_regexp " "
 
 
 let concat acc elt =
