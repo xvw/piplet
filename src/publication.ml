@@ -30,8 +30,11 @@ type t = {
   title: string
 ; abstract: string
 ; tags: string list
-; permalink: string
+; file: File.name
+; permalink: File.name
 ; draft: bool
 ; date: float
 ; contributors: Contributor.t list
+; references: reference list
 }
+

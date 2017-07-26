@@ -32,9 +32,19 @@ type t = {
   title: string
 ; abstract: string
 ; tags: string list
-; permalink: string
+; file: File.name
+; permalink: File.name
 ; draft: bool
 ; date: float
 ; contributors: Contributor.t list
+; references: reference list
 }
 
+(** Convert a Sexp to a reference *)
+val reference_of_sexp : Sexp.t -> reference
+
+(** Convert a Sexp to a publication *)
+val t_of_sexp : Sexp.t -> t
+
+(** Convert a Sexp file to a publication  *)
+val of_file : File.name -> t
