@@ -27,6 +27,13 @@ type line = string
 type chmod = int
 type extension = string
 
+type document_kind =
+  | Html
+  | Text
+  | Markdown
+  | TeX
+  (* | AsciiDoc *)
+
 exception Already_exists of name
 
 (** Returns the content of a file into a Byte *)
@@ -68,3 +75,6 @@ val mtime : name -> Datetime.t
 
 (** Get the contributors list of a file *)
 val contributors: name -> Contributor.t list
+
+(** Returns the kind of a document by his name *)
+val kind_of : name -> document_kind

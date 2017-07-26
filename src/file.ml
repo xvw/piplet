@@ -27,6 +27,13 @@ type line = string
 type chmod = int
 type extension = string
 
+type document_kind =
+  | Html
+  | Text
+  | Markdown
+  | TeX
+  (* | AsciiDoc *)
+
 exception Already_exists of name
 
 let read filename =
@@ -91,3 +98,10 @@ let overwrite ?(chmod=0o777) name content =
     try remove name
     with _ -> ()
   in create ~chmod name content
+
+let kind_of filename =
+  match Filename.extension filename with
+  | "html" -> Html
+  | "md" | "markdown" -> Markdown
+  | "tex" | "latex" -> TeX
+  | _ -> Text
