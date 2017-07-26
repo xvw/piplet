@@ -51,6 +51,14 @@ let to_rfc822 value =
     (t.Unix.tm_min)
     (t.Unix.tm_sec)
 
+let to_blog_format datetime =
+  let dt = to_tm datetime in
+  Printf.sprintf
+    "%02d/%02d/%04d"
+    dt.Unix.tm_mday
+    (dt.Unix.tm_mon + 1)
+    (dt.Unix.tm_year + 1900)
+
 let of_blog_format str_representation =
   Scanf.sscanf
     str_representation

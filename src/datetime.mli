@@ -37,4 +37,7 @@ val of_tm: Unix.tm -> t
 val to_rfc822 : t -> string
 
 (** Convert String to Datetime.t *)
-val of_blog_format : string -> t 
+val of_blog_format : string -> t
+
+(** Convert Datetime.t to String (to be remake) *)
+val to_blog_format : t -> string
