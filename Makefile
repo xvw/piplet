@@ -4,7 +4,7 @@ lib:
 	ocamlbuild -I src blog.cma
 
 main: lib
-	ocamlbuild -I src main.byte
+	ocamlbuild -I src generator.native
 
 toplevel: lib
 	ledit ocaml -I _build/src blog.cma
