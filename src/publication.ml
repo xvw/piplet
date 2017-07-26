@@ -136,6 +136,9 @@ let t_of_sexp = function
         "Publication", "You should have : (publication (...))"))
 
 let of_file filename =
-  filename
-  |> Sexp.of_file
-  |> t_of_sexp
+  let record =
+    filename
+    |> Sexp.of_file
+    |> t_of_sexp
+  and contributors = File.contributors filename in
+  {record with contributors = contributors}
