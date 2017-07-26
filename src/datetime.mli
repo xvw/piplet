@@ -35,3 +35,6 @@ val of_tm: Unix.tm -> t
 
 (** Convert Datetime.t to a RSS2 compliant format *)
 val to_rfc822 : t -> string
+
+(** Convert String to Datetime.t *)
+val of_blog_format : string -> t 

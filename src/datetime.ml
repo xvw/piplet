@@ -50,3 +50,21 @@ let to_rfc822 value =
     (t.Unix.tm_hour)
     (t.Unix.tm_min)
     (t.Unix.tm_sec)
+
+let of_blog_format str_representation =
+  Scanf.sscanf
+    str_representation
+    "%02d/%02d/%04d"
+    (fun d m y ->
+       {
+         (to_tm (now ())) with
+         Unix.tm_sec = 0
+       ; Unix.tm_min = 0
+       ; Unix.tm_hour = 0
+       ; Unix.tm_mday = d
+       ; Unix.tm_mon = (m -1)
+       ; Unix.tm_year = (y - 1900)
+       }
+       |> of_tm
+    )
+    
