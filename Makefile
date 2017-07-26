@@ -1,10 +1,10 @@
-all: main
+all: generator css_generator
 
 lib:
 	ocamlbuild -I src blog.cma
 
-main: lib
-	ocamlbuild -I src generator.native
+%: src/%.ml
+	ocamlbuild -I src $(@).native
 
 toplevel: lib
 	ledit ocaml -I _build/src blog.cma

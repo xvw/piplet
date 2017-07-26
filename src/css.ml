@@ -141,7 +141,9 @@ let produce =
     ""
 
 let create filename =
-  filename
-  |> builder_of_file
-  |> produce
-  |> String.trim
+  let res =
+    filename
+    |> builder_of_file
+    |> produce
+    |> String.trim
+  in res ^ "\n"
