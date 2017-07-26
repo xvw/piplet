@@ -35,4 +35,4 @@ let create name email = {
 let from_gitlog log =
   match Regex.(split uniq_separator log) with
   | [name; email] -> create name email
-  | _ -> create "unknown" "unknown" 
+  | _ -> create "unknown" "unknown"

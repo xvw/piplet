@@ -70,7 +70,7 @@ let mtime filename =
   stats.Unix.st_mtime
 
 let contributors filename =
-  try 
+  try
     "git log --format=\"%an"
     ^ Util.uniq_separator
     ^ "%ae\" "

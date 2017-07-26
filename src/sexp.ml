@@ -47,7 +47,7 @@ let to_eol sexp length =
 let parse_atom sexp length =
   let rec parse acc i =
     if length = i then (Atom acc, i)
-    else 
+    else
       match sexp.[i] with
       | ' ' | '\t' | '\n' | ')' | '(' | ';' -> (Atom acc, i)
       | x -> parse (Util.add_char acc x) (succ i)
@@ -70,7 +70,7 @@ let parse_node sexp length i =
       let (node, new_i) = parse [] (succ i) in
       let new_acc =
         match node with
-        | [] | [Atom ""] -> acc 
+        | [] | [Atom ""] -> acc
         | _ -> (Node node) :: acc
       in parse new_acc (abstract_trim sexp length new_i)
     | ';' -> parse acc (to_eol sexp length i)

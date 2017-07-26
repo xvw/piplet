@@ -35,7 +35,9 @@ val read : name -> content
 (** Returns the content of a file into a String list *)
 val read_lines: name -> line list
 
-(** [write name content] write [content] into the file referenced by his [name] *)
+(** [write name content] write [content] into the file referenced by
+    his [name]
+*)
 val write: name -> content -> unit
 
 (** Check if a file exists *)

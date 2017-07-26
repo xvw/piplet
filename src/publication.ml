@@ -63,12 +63,12 @@ let parse_tags record elt =
     }
   | x ->
     raise (Util.Malformed_sexp (
-        "Publication", "No idea what is : " ^ Sexp.to_string x)) 
-  
+        "Publication", "No idea what is : " ^ Sexp.to_string x))
+
 
 let perform_extraction record elt =
-  let open Sexp in 
-  match elt with 
+  let open Sexp in
+  match elt with
   | Node [Atom "title"; String title] ->
     { record with title = title }
   | Node [Atom "abstract"; String abstract] ->
@@ -100,4 +100,3 @@ let of_file filename =
   filename
   |> Sexp.of_file
   |> t_of_sexp
-

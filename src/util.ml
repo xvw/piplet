@@ -64,7 +64,7 @@ let string_of_in_channel close channel =
   let () = really_input channel result 0 length in
   let _ = close channel in
   Bytes.to_string result
-  
+
 let run_to_string command =
   let channel = Unix.open_process_in command in
   let rec aux acc =

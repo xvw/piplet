@@ -23,7 +23,7 @@ let let_regexp = Str.regexp "@let \\([A-Za-z]+\\)(\\([^()]+\\))"
 let get_regexp = Str.regexp "@get(\\([A-Za-z]+\\))"
 let comment_regexp = Str.regexp "/\\*\\|\\*/"
 let space_regexp = Str.regexp " +"
-    
+
 exception Malformed_css of string
 
 type fragments =
@@ -34,14 +34,14 @@ type fragments =
 type builder = fragments list
 
 let each_nodes elt acc =
-  let open Sexp in 
+  let open Sexp in
   match elt with
   | Node [Atom "file"; String str] -> (File str) :: acc
   | Node [Atom "plain"; String str]
   | Node [Atom "text"; String str]
   | Node [Atom "txt"; String str]
   | Node [String str] -> (Plain str) :: acc
-  | Node [Atom "external"; String str] -> (External str) :: acc 
+  | Node [Atom "external"; String str] -> (External str) :: acc
   | _ ->
     raise (
       Util.Malformed_sexp (
@@ -118,7 +118,7 @@ let minimize elt =
 
 let concat acc elt =
   acc ^ " " ^ elt
-  
+
 
 let concat_with_env env acc elt =
   elt
@@ -145,4 +145,3 @@ let create filename =
   |> builder_of_file
   |> produce
   |> String.trim
-   

@@ -75,4 +75,3 @@ let of_blog_format str_representation =
        }
        |> of_tm
     )
-    

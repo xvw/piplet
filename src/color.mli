@@ -40,4 +40,4 @@ val white : color
 
 (** Returns a colorized version of the text *)
 val colorize: ?fg:color -> ?bg:color-> text -> colorized_text
-val c: ?fg:color -> ?bg:color-> text -> colorized_text  
+val c: ?fg:color -> ?bg:color-> text -> colorized_text
