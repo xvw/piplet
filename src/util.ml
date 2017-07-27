@@ -75,6 +75,8 @@ let run_to_string command =
   let _ = Unix.close_process_in channel in
   result
 
+let exec = run_to_string
+
 let run_to_lines command =
   let channel = Unix.open_process_in command in
   let rec aux acc =
@@ -91,3 +93,6 @@ let seed =
 
 let uniq_separator =
   Printf.sprintf "<!%s!>" seed
+
+let external_data uri =
+  exec ("curl -L --fail --silent --show-error " ^ uri)

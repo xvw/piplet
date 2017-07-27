@@ -48,6 +48,9 @@ val add_char: string -> char -> string
 (** Converts an in_channel into a string *)
 val string_of_in_channel: (in_channel -> 'a) -> in_channel -> string
 
+(** Same of run_to_string *)
+val exec : string -> string
+
 (** Execute a command shell and returns the result in a string *)
 val run_to_string: string -> string
 
@@ -59,3 +62,6 @@ val seed: string
 
 (** Generate an uniq separator (for regexp orelse *)
 val uniq_separator: string
+
+(** Get the plain text of a URI*)
+val external_data : uri -> string

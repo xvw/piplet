@@ -117,7 +117,7 @@ let minimize elt =
 
 
 let concat acc elt =
-  acc ^ " " ^ elt
+  acc ^ " " ^ (minimize elt) ^ "\n"
 
 
 let concat_with_env env acc elt =
@@ -135,8 +135,9 @@ let produce =
         let txt = File.read file in
         concat_with_env env acc txt
       | Plain txt -> concat_with_env env acc txt
-      | External _ ->
-        raise (Util.Not_implemented "External :'(")
+      | External uri ->
+        let ext = Util.external_data uri in
+        concat acc ext
     )
     ""
 
