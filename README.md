@@ -1,6 +1,6 @@
 A simple blog generator in OCaml (for my personal usage).
 
-## Dependancies
+## Deps
 
 - OCaml 4.05
 - OCamlfind
