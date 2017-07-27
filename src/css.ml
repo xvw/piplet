@@ -146,4 +146,4 @@ let create filename =
     |> builder_of_file
     |> produce
     |> String.trim
-  in res ^ "\n"
+  in res ^ " /* EOF */"
