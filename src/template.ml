@@ -40,11 +40,11 @@ let apply ruleset ctx content =
   List.fold_left (_apply ctx) content ruleset
 
 let delimiter = Str.regexp ":"
-let inject =
+let inject ?(f=(fun _ x -> x)) _ =
   macro
     "inject:.+"
     (fun _ matched ->
        match Str.split delimiter matched with
-       | [_; key] -> File.read key
+       | [_; key] -> f key (File.read key)
        | _ -> raise (Failure "Unparsable injection")
     )
