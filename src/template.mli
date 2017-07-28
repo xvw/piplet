@@ -32,4 +32,4 @@ val apply : 'a ruleset -> 'a  -> string -> string
 
 (** {2 Presaved rules} *)
 
-val inject : ?f:(string -> string -> string) -> 'a -> 'a rule
+val inject : ?f:(string -> 'a -> string -> string) -> 'a -> 'a rule
