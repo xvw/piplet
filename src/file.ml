@@ -105,3 +105,8 @@ let kind_of filename =
   | "md" | "markdown" -> Markdown
   | "tex" | "latex" -> TeX
   | _ -> Text
+
+let is_directory = Sys.is_directory
+
+let available_directory filename =
+  (exists filename) && (is_directory filename)

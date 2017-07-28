@@ -50,6 +50,12 @@ val write: name -> content -> unit
 (** Check if a file exists *)
 val exists: name -> bool
 
+(** Check if a file is a directory *)
+val is_directory : name -> bool
+
+(** Check if a name is an available directory *)
+val available_directory: name -> bool
+
 (** [create name content] create a new file. Raise Already_exists(filename)
     if the file already exists.
 *)
