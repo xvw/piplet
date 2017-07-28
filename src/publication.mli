@@ -32,7 +32,7 @@ type t = {
   title: string
 ; abstract: string
 ; tags: string list
-; file: File.name
+; files: File.name list
 ; permalink: File.name
 ; draft: bool
 ; date: float

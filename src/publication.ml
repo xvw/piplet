@@ -37,7 +37,7 @@ type t = {
   title: string
 ; abstract: string
 ; tags: string list
-; file: File.name
+; files: File.name list
 ; permalink: File.name
 ; draft: bool
 ; date: Datetime.t
@@ -49,7 +49,7 @@ let empty = {
   title = "Unknown"
 ; abstract = "Unknown"
 ; tags = []
-; file = ""
+; files = []
 ; permalink = ""
 ; draft = false
 ; date = Datetime.now ()
@@ -97,12 +97,20 @@ let parse_tags record elt =
   let open Sexp in
   match elt with
   | Atom tag | String tag ->
-    { record with
-      tags = ((Util.tokenize tag) :: record.tags)
-    }
+    { record with tags = ((Util.tokenize tag) :: record.tags)}
   | x ->
     raise (Util.Malformed_sexp (
         "Publication", "No idea what is : " ^ Sexp.to_string x))
+
+let parse_files record elt =
+  let open Sexp in
+  match elt with
+  | Atom file | String file ->
+    { record with files = file :: record.files}
+  | x ->
+    raise (Util.Malformed_sexp (
+        "Publication", "No idea what is : " ^ Sexp.to_string x))
+
 
 
 let perform_extraction record elt =
@@ -114,8 +122,10 @@ let perform_extraction record elt =
     { record with abstract = abstract }
   | Node [Atom "permalink"; String permalink] ->
     { record with permalink = permalink }
-  | Node [Atom "file"; String file] ->
-    { record with file = file }
+  | Node [Atom ("file" | "files"); String file] ->
+    { record with files = file :: record.files }
+  | Node [Atom ("file" | "files"); Node files] ->
+    List.fold_left parse_files record files
   | Node [Atom "draft"; Atom (("true" | "false") as flag)] ->
     { record with draft = (flag <> "false") }
   | Node [Atom "date"; String date] ->
@@ -130,7 +140,8 @@ let perform_extraction record elt =
 
 let t_of_sexp = function
   | Sexp.(Node [Atom "publication"; Node li]) ->
-    List.fold_left perform_extraction empty li
+    let record = List.fold_left perform_extraction empty li in
+    { record with files = List.rev record.files }
   | _ -> raise (
       Util.Malformed_sexp (
         "Publication", "You should have : (publication (...))"))
