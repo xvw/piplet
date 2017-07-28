@@ -19,9 +19,7 @@
  *
  *)
 
-type 'a rule =
-  | Macro of string * ('a -> string -> string)
-
+type 'a rule = Macro of string * ('a -> string -> string)
 type 'a ruleset = 'a rule list
 
 let macro key f = Macro (key, f)
@@ -39,10 +37,7 @@ let _apply context content rule =
       content
 
 let apply ruleset ctx content =
-  List.fold_left
-    (_apply ctx)
-    content
-    ruleset
+  List.fold_left (_apply ctx) content ruleset
 
 let delimiter = Str.regexp ":"
 let inject =
