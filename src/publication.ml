@@ -43,6 +43,8 @@ type t = {
 ; date: Datetime.t
 ; contributors: Contributor.t list
 ; references: reference list
+; formatted_abstract : string
+; content : string
 }
 
 let empty = {
@@ -55,6 +57,8 @@ let empty = {
 ; date = Datetime.now ()
 ; contributors = []
 ; references = []
+; formatted_abstract = ""
+; content = ""
 }
 
 let specific_reference record elt =
@@ -111,8 +115,6 @@ let parse_files record elt =
     raise (Util.Malformed_sexp (
         "Publication", "No idea what is : " ^ Sexp.to_string x))
 
-
-
 let perform_extraction record elt =
   let open Sexp in
   match elt with
@@ -146,10 +148,24 @@ let t_of_sexp = function
       Util.Malformed_sexp (
         "Publication", "You should have : (publication (...))"))
 
+let create_content content file =
+  content ^ (Processor.of_file file) ^ "  \n"
+
+let process_files files =
+  let content = List.fold_left create_content "" files in
+  let length = String.length content in
+  if length > 3 then String.sub content 0 (length - 3)
+  else content
+
 let of_file filename =
   let record =
     filename
     |> Sexp.of_file
     |> t_of_sexp
   and contributors = File.contributors filename in
-  {record with contributors = contributors}
+  {
+    record with
+    contributors = contributors
+  ; formatted_abstract = Processor.of_markdown record.abstract
+  ; content = List.fold_left create_content "" record.files
+  }

@@ -101,9 +101,9 @@ let overwrite ?(chmod=0o777) name content =
 
 let kind_of filename =
   match Filename.extension filename with
-  | "html" -> Html
-  | "md" | "markdown" -> Markdown
-  | "tex" | "latex" -> TeX
+  | ".html" | ".htm"      -> Html
+  | ".md"   | ".markdown" -> Markdown
+  | ".tex"  | ".latex"    -> TeX
   | _ -> Text
 
 let is_directory = Sys.is_directory

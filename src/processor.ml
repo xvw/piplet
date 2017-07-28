@@ -20,7 +20,10 @@
  *)
 
 let cmd input text =
-  let s = "echo '" ^ text ^ "' | pandoc -t html -f "
+  let s =
+    "echo \""
+    ^ String.escaped text
+    ^ "\" | pandoc -t html -f "
   in Printf.sprintf "%s %s" s input
 
 let of_markdown t = Util.exec @@ cmd "markdown" t

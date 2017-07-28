@@ -38,6 +38,8 @@ type t = {
 ; date: float
 ; contributors: Contributor.t list
 ; references: reference list
+; formatted_abstract : string
+; content : string
 }
 
 (** Convert a Sexp to a reference *)
