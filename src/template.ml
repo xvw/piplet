@@ -18,3 +18,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *)
+
+type 'a rule =
+  | Macro of string * ('a -> string -> string)
+
+type 'a ruleset = 'a rule list
+
+let macro key f = Macro (key, f)
+
+let _apply context content rule =
+  match rule with
+  | Macro (key, f) ->
+    let open Str in
+    global_substitute
+      (regexp ("{{\\("^key^"\\)}}"))
+      (fun buffer ->
+         let matched_key = matched_group 1 buffer in 
+         f context matched_key
+      )
+      content
+
+let apply ruleset ctx content =
+  List.fold_left
+    (_apply ctx)
+    content
+    ruleset
+
+let delimiter = Str.regexp ":"
+let inject =
+  macro
+    "inject:.+"
+    (fun _ matched ->
+       match Str.split delimiter matched with
+       | [_; key] -> File.read key
+       | _ -> raise (Failure "Unparsable injection")
+    )

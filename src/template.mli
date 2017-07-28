@@ -20,3 +20,16 @@
  *)
 
 (** Template processing *)
+
+type 'a rule
+type 'a ruleset = 'a rule list
+
+(** Create a template rule *)
+val macro : string -> ('a -> string -> string) -> 'a rule
+
+(** Apply a rule to a string *)
+val apply : 'a ruleset -> 'a  -> string -> string
+
+(** {2 Presaved rules} *)
+
+val inject : unit rule
