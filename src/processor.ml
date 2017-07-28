@@ -25,3 +25,9 @@ let cmd input text =
 
 let of_markdown t = Util.exec @@ cmd "markdown" t
 let of_tex t = Util.exec @@ cmd "latex" t
+
+let of_file filename =
+  match File.kind_of filename with
+  | File.TeX -> of_tex (File.read filename)
+  | File.Markdown -> of_markdown (File.read filename)
+  | _ -> File.read filename

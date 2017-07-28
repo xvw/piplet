@@ -23,3 +23,4 @@
 
 val of_markdown : string -> string
 val of_tex : string -> string
+val of_file : File.name -> string
