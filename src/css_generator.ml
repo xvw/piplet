@@ -43,7 +43,8 @@ let () =
   | [] -> print Color.red  "No configuration file"
   | [css_file] ->
     if File.exists css_file then begin
-      let res = Css.create css_file in
+      let () = Cache.init () in
+      let res = Css.create ~interactive:true css_file in
       if need_output then
         let () = File.overwrite !output res in
         print Color.green ("The file is generated here: " ^ !output )

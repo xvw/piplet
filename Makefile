@@ -13,3 +13,4 @@ clean:
 	rm -rf *.byte
 	rm -rf *.native
 	rm -rf _build
+	rm -rf .cache

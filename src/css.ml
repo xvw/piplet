@@ -127,7 +127,7 @@ let concat_with_env env acc elt =
   |> replace_variables env
   |> concat acc
 
-let produce =
+let produce ?(interactive=false) =
   let env = Hashtbl.create 1 in
   List.fold_left (fun acc fragment ->
       match fragment with
@@ -136,15 +136,20 @@ let produce =
         concat_with_env env acc txt
       | Plain txt -> concat_with_env env acc txt
       | External uri ->
-        let ext = Util.external_data uri in
-        concat acc ext
+        if not (Cache.has_external uri) then
+          let ext = Util.external_data uri in
+          let () =
+            if interactive
+            then Cache.of_external uri ext
+          in concat acc ext
+        else concat acc (Cache.get_external uri)
     )
     ""
 
-let create filename =
+let create ?(interactive=false)filename =
   let res =
     filename
     |> builder_of_file
-    |> produce
+    |> produce ~interactive
     |> String.trim
   in res ^ " /* EOF */"

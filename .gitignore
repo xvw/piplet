@@ -31,3 +31,4 @@ _build/
 setup.data
 setup.log
 example/
+.cache/

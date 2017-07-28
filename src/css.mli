@@ -37,7 +37,7 @@ val builder_of_file : File.name -> builder
 val builder_to_string : builder -> string
 
 (** Produce a css content from a builder *)
-val produce : builder -> string
+val produce : ?interactive:bool -> builder -> string
 
 (** Returns a string (css representation) from a sexp file *)
-val create : File.name -> string
+val create : ?interactive:bool -> File.name -> string
