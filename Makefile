@@ -1,4 +1,4 @@
-all: lib generator css_generator
+all: lib generator css_generator publication_generator
 
 lib:
 	ocamlbuild -I src blog.cma
