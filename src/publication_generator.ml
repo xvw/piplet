@@ -36,6 +36,7 @@ let () =
         "-url", Arg.Set_string url, "The permalink of the publication";
       ]
       callback_function
+      usage
     
   in
   Printf.printf
