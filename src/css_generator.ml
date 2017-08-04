@@ -21,7 +21,7 @@
 
 (** The main generator for process CSS *)
 
-let usage = "css_generator [-o output] config.el"
+let usage = "./css_generator.native [-o output] config.el"
 let output = ref Util.uniq_separator
 let args  = ref []
 let callback_function x = args := x :: (!args)

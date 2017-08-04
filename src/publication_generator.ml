@@ -21,5 +21,25 @@
 
 (** The main generator for Publication  *)
 
+
+let usage = "./publication_generator.native [-o output] [-url permalink] post.el"
+let output = ref Util.uniq_separator
+let url = ref "/"
+let args = ref ""
+let callback_function x = args := x
+
 let () =
-  print_endline "to be implemented"
+  let _ =
+    Arg.parse
+      [
+        "-o", Arg.Set_string output, "The target of the generation";
+        "-url", Arg.Set_string url, "The permalink of the publication";
+      ]
+      callback_function
+    
+  in
+  Printf.printf
+    "%s\n%s\n%s"
+    !output
+    !url
+    !args
