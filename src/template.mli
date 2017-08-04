@@ -32,4 +32,5 @@ val apply : 'a ruleset -> 'a  -> string -> string
 
 (** {2 Presaved rules} *)
 
+(** A special rules to inject content with {{inject:page.html}} *)
 val inject : ?f:(string -> 'a -> string -> string) -> 'a -> 'a rule
