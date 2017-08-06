@@ -96,3 +96,8 @@ let uniq_separator =
 
 let external_data uri =
   exec ("curl -L --fail --silent --show-error " ^ uri)
+
+
+let uniq_to_option s =
+  if s = uniq_separator then None
+  else Some s

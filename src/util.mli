@@ -65,3 +65,6 @@ val uniq_separator: string
 
 (** Get the plain text of a URI*)
 val external_data : uri -> string
+
+(** Converts a String to an option *)
+val uniq_to_option : string -> string option

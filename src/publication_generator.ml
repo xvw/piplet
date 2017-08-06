@@ -22,9 +22,14 @@
 (** The main generator for Publication  *)
 
 
-let usage = "./publication_generator.native [-o output] [-url permalink] post.el"
+let usage =
+  "./publication_generator.native"
+  ^ "[-o output] [-url permalink] [-tpl template]"
+  ^ "post.el"
+  
 let output = ref Util.uniq_separator
 let url = ref "/"
+let tpl = ref Util.uniq_separator
 let args = ref ""
 let callback_function x = args := x
 
@@ -32,15 +37,14 @@ let () =
   let _ =
     Arg.parse
       [
-        "-o", Arg.Set_string output, "The target of the generation";
-        "-url", Arg.Set_string url, "The permalink of the publication";
+        "-o", Arg.Set_string output, "The target of the generation"
+      ; "-url", Arg.Set_string url, "The permalink of the publication"
+      ; "-tpl", Arg.Set_string tpl, "The template file"
       ]
       callback_function
       usage
     
   in
-  Printf.printf
-    "%s\n%s\n%s"
-    !output
-    !url
-    !args
+  let template = Util.uniq_to_option !tpl in
+  let output = Util.uniq_to_option !output in
+  ()
