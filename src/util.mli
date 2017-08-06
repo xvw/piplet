@@ -71,3 +71,6 @@ val uniq_to_option : string -> string option
 
 (** Print in a color *)
 val print: Color.color -> string -> unit
+
+(** Join a list with a separator *)
+val join : ('a -> string) -> string -> 'a list -> string

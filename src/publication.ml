@@ -170,6 +170,37 @@ let of_file filename =
   ; content = List.fold_left create_content "" record.files
   }
 
+let title_rule =
+  Template.macro
+    "title"
+    (fun post _ -> post.title)
+    
+let abstract_rule =
+  Template.macro
+    "abstract"
+    (fun post _ -> post.abstract)
+    
+let content_rule =
+  Template.macro
+    "content"
+    (fun post _ -> post.content)
+    
+let tags_rules =
+  Template.macro
+    "tags"
+    (fun post _ -> Util.join (fun x -> x) ", " post.tags)
+
 let create template sexp =
-  let sexp = of_file sexp in ()
+  let publication = of_file sexp in
+  File.read template
+  |> Template.apply
+    [
+      title_rule
+    ; abstract_rule
+    ; content_rule
+    ; tags_rules
+    ]
+    publication
+    
+  
   

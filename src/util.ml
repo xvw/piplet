@@ -106,3 +106,10 @@ let uniq_to_option s =
 let print color text =
   Color.(c ~fg:color @@ text)
   |> print_endline
+
+
+let join f separator = function
+  | [] -> ""
+  | x :: xs ->
+    List.fold_left (fun acc elt -> acc ^ separator ^ (f elt) ) (f x) xs
+  

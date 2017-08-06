@@ -50,3 +50,6 @@ val t_of_sexp : Sexp.t -> t
 
 (** Convert a Sexp file to a publication  *)
 val of_file : File.name -> t
+
+(** Convert a template and a sexpfile to an html publication *)
+val create : File.name -> File.name -> string
