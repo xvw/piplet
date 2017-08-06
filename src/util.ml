@@ -101,3 +101,8 @@ let external_data uri =
 let uniq_to_option s =
   if s = uniq_separator then None
   else Some s
+
+
+let print color text =
+  Color.(c ~fg:color @@ text)
+  |> print_endline

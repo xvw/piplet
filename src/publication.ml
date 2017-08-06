@@ -170,4 +170,6 @@ let of_file filename =
   ; content = List.fold_left create_content "" record.files
   }
 
-
+let create template sexp =
+  let sexp = of_file sexp in ()
+  

@@ -26,10 +26,6 @@ let output = ref Util.uniq_separator
 let args  = ref []
 let callback_function x = args := x :: (!args)
 
-let print color text =
-  Color.(c ~fg:color @@ text)
-  |> print_endline
-
 
 let () =
   let _ =
@@ -40,14 +36,14 @@ let () =
   in
   let need_output = !output <> Util.uniq_separator in
   match !args with
-  | [] -> print Color.red  "No configuration file"
+  | [] -> Util.print Color.red  "No configuration file"
   | [css_file] ->
     if File.exists css_file then begin
       let () = Cache.init () in
       let res = Css.create ~interactive:true css_file in
       if need_output then
         let () = File.overwrite !output res in
-        print Color.green ("The file is generated here: " ^ !output )
-      else print Color.cyan res
-    end else print Color.red ("The file: " ^ css_file ^ ", does not exists")
-  |  _ -> print Color.red "You can send only one configuration file !"
+        Util.print Color.green ("The file is generated here: " ^ !output )
+      else Util.print Color.cyan res
+    end else Util.print Color.red ("The file: " ^ css_file ^ ", does not exists")
+  |  _ -> Util.print Color.red "You can send only one configuration file !"

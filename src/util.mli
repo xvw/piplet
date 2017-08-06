@@ -68,3 +68,6 @@ val external_data : uri -> string
 
 (** Converts a String to an option *)
 val uniq_to_option : string -> string option
+
+(** Print in a color *)
+val print: Color.color -> string -> unit

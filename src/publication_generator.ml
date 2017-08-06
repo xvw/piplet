@@ -24,7 +24,7 @@
 
 let usage =
   "./publication_generator.native"
-  ^ "[-o output] [-url permalink] [-tpl template]"
+  ^ "[-o output] [-url permalink] -tpl template "
   ^ "post.el"
   
 let output = ref Util.uniq_separator
@@ -47,4 +47,7 @@ let () =
   in
   let template = Util.uniq_to_option !tpl in
   let output = Util.uniq_to_option !output in
-  ()
+  match template with
+  | None -> Util.print Color.red "You have to specify a template"
+  | Some t -> ()
+    
