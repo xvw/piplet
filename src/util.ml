@@ -111,5 +111,7 @@ let print color text =
 let join f separator = function
   | [] -> ""
   | x :: xs ->
-    List.fold_left (fun acc elt -> acc ^ separator ^ (f elt) ) (f x) xs
+     List.fold_left (fun acc elt -> acc ^ separator ^ (f elt) ) (f x) xs
+
+let join_str = join (fun x -> x)
   

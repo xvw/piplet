@@ -170,6 +170,18 @@ let of_file filename =
   ; content = List.fold_left create_content "" record.files
   }
 
+let tag_to_li acc tags =
+  acc
+  ^ Format.sprintf
+      "<li class=\"piplet--li-tag\" data-class=\"tag\" data-tag=\"%s\">%s</li>"
+      tags
+      tags
+
+let tags_to_ul post _ =
+  "<ul class=\"piplet--ul-tags\" data-class=\"tag\">"
+  ^ (List.fold_left tag_to_li "" post.tags)
+  ^ "</ul>"
+
 let title_rule =
   Template.macro
     "title"
@@ -190,6 +202,11 @@ let tags_rules =
     "tags"
     (fun post _ -> Util.join (fun x -> x) ", " post.tags)
 
+let tags_list_rules =
+  Template.macro
+    "li-tags"
+    tags_to_ul
+
 let create template sexp =
   let publication = of_file sexp in
   File.read template
@@ -199,6 +216,7 @@ let create template sexp =
     ; abstract_rule
     ; content_rule
     ; tags_rules
+    ; tags_list_rules
     ]
     publication
     

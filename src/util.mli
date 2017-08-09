@@ -74,3 +74,6 @@ val print: Color.color -> string -> unit
 
 (** Join a list with a separator *)
 val join : ('a -> string) -> string -> 'a list -> string
+
+(** Join a string *)
+val join_str : string -> string list -> string
