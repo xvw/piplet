@@ -20,133 +20,143 @@
  *)
 
 type reference = {
-  name: string
-; url: string
-; authors: string list
-; year: int
-}
+    name: string
+  ; url: string
+  ; authors: string list
+  ; year: int
+  }
 
 let empty_ref = {
-  name = ""
-; url = ""
-; authors = []
-; year = 0
-}
+    name = ""
+  ; url = ""
+  ; authors = []
+  ; year = 0
+  }
 
 type t = {
-  title: string
-; abstract: string
-; tags: string list
-; files: File.name list
-; permalink: File.name
-; draft: bool
-; date: Datetime.t
-; contributors: Contributor.t list
-; references: reference list
-; formatted_abstract : string
-; content : string
-}
+    title: string
+  ; abstract: string
+  ; tags: string list
+  ; files: File.name list
+  ; permalink: File.name
+  ; draft: bool
+  ; date: Datetime.t
+  ; contributors: Contributor.t list
+  ; references: reference list
+  ; formatted_abstract : string
+  ; content : string
+  ; lang: string
+  }
 
 let empty = {
-  title = "Unknown"
-; abstract = "Unknown"
-; tags = []
-; files = []
-; permalink = ""
-; draft = false
-; date = Datetime.now ()
-; contributors = []
-; references = []
-; formatted_abstract = ""
-; content = ""
-}
+    title = "Unknown"
+  ; abstract = "Unknown"
+  ; tags = []
+  ; files = []
+  ; permalink = ""
+  ; draft = false
+  ; date = Datetime.now ()
+  ; contributors = []
+  ; references = []
+  ; formatted_abstract = ""
+  ; content = ""
+  ; lang = "fr"
+  }
 
 let specific_reference record elt =
   let open Sexp in
   match elt with
   | Node [Atom "name"; String name] ->
-    { record with name = name}
+     { record with name = name}
   | Node [Atom "url"; String url] ->
-    { record with url = url}
+     { record with url = url}
   | Node [Atom "year"; (Atom year | String year)] ->
-    { record with year = int_of_string year}
+     { record with year = int_of_string year}
   | Node [Atom "authors"; Node authors] ->
-    let authors =
-      List.fold_left
-        (fun acc author ->
+     let authors =
+       List.fold_left
+         (fun acc author ->
            match author with
            | String name -> name :: acc
            | x ->
-             raise (Util.Malformed_sexp (
-                 "Publication", "No idea what is : " ^ Sexp.to_string x))
-        )
-        record.authors
-        authors
-    in { record with authors = authors}
+              raise (
+                  Util.Malformed_sexp (
+                      "Publication", "No idea what is : " ^ Sexp.to_string x))
+         )
+         record.authors
+         authors
+     in { record with authors = authors}
   | x ->
-    raise (Util.Malformed_sexp (
-        "Publication", "No idea what is : " ^ Sexp.to_string x))
+     raise (
+         Util.Malformed_sexp (
+             "Publication", "No idea what is : " ^ Sexp.to_string x))
 
 let parse_references record elt =
   let open Sexp in
   match elt with
   | Node data ->
-    let a_ref = List.fold_left specific_reference empty_ref data in
-    { record with references = (a_ref :: record.references) }
+     let a_ref = List.fold_left specific_reference empty_ref data in
+     { record with references = (a_ref :: record.references) }
   | x ->
-    raise (Util.Malformed_sexp (
-        "Publication", "No idea what is : " ^ Sexp.to_string x))
+     raise (
+         Util.Malformed_sexp (
+             "Publication", "No idea what is : " ^ Sexp.to_string x))
 
 let parse_tags record elt =
   let open Sexp in
   match elt with
   | Atom tag | String tag ->
-    { record with tags = ((Util.tokenize tag) :: record.tags)}
+     { record with tags = ((Util.tokenize tag) :: record.tags)}
   | x ->
-    raise (Util.Malformed_sexp (
-        "Publication", "No idea what is : " ^ Sexp.to_string x))
+     raise (
+         Util.Malformed_sexp (
+             "Publication", "No idea what is : " ^ Sexp.to_string x))
 
 let parse_files record elt =
   let open Sexp in
   match elt with
   | Atom file | String file ->
-    { record with files = file :: record.files}
+     { record with files = file :: record.files}
   | x ->
-    raise (Util.Malformed_sexp (
-        "Publication", "No idea what is : " ^ Sexp.to_string x))
+     raise (
+         Util.Malformed_sexp (
+             "Publication", "No idea what is : " ^ Sexp.to_string x))
 
 let perform_extraction record elt =
   let open Sexp in
   match elt with
   | Node [Atom "title"; String title] ->
-    { record with title = title }
+     { record with title = title }
   | Node [Atom "abstract"; String abstract] ->
-    { record with abstract = abstract }
+     { record with abstract = abstract }
   | Node [Atom "permalink"; String permalink] ->
-    { record with permalink = permalink }
+     { record with permalink = permalink }
   | Node [Atom ("file" | "files"); String file] ->
-    { record with files = file :: record.files }
+     { record with files = file :: record.files }
   | Node [Atom ("file" | "files"); Node files] ->
-    List.fold_left parse_files record files
+     List.fold_left parse_files record files
   | Node [Atom "draft"; Atom (("true" | "false") as flag)] ->
-    { record with draft = (flag <> "false") }
+     { record with draft = (flag <> "false") }
   | Node [Atom "date"; String date] ->
-    { record with date = Datetime.of_blog_format date }
+     { record with date = Datetime.of_blog_format date }
   | Node [Atom "references"; Node references] ->
-    List.fold_left parse_references record references
+     List.fold_left parse_references record references
+  | Node [Atom "lang"; (Atom lang | String lang)] ->
+     { record with lang = lang}
   | Node [Atom "tags"; Node tags] ->
-    List.fold_left parse_tags record tags
+     List.fold_left parse_tags record tags
   | x ->
-    raise (Util.Malformed_sexp (
-        "Publication", "No idea what is : " ^ Sexp.to_string x))
+     raise (
+         Util.Malformed_sexp (
+             "Publication", "No idea what is : " ^ Sexp.to_string x))
 
 let t_of_sexp = function
   | Sexp.(Node [Atom "publication"; Node li]) ->
-    let record = List.fold_left perform_extraction empty li in
-    { record with files = List.rev record.files }
+     let record = List.fold_left perform_extraction empty li in
+     { record with files = List.rev record.files }
   | _ -> raise (
-      Util.Malformed_sexp (
-        "Publication", "You should have : (publication (...))"))
+             Util.Malformed_sexp (
+                 "Publication", "You should have : (publication (...))"))
 
 let create_content content file =
   content ^ (Processor.of_file file) ^ "  \n"
@@ -186,17 +196,17 @@ let title_rule =
   Template.macro
     "title"
     (fun post _ -> post.title)
-    
+  
 let abstract_rule =
   Template.macro
     "abstract"
     (fun post _ -> post.abstract)
-    
+  
 let content_rule =
   Template.macro
     "content"
     (fun post _ -> post.content)
-    
+  
 let tags_rules =
   Template.macro
     "tags"
@@ -211,14 +221,14 @@ let create template sexp =
   let publication = of_file sexp in
   File.read template
   |> Template.apply
-    [
-      title_rule
-    ; abstract_rule
-    ; content_rule
-    ; tags_rules
-    ; tags_list_rules
-    ]
-    publication
-    
+       [
+         title_rule
+       ; abstract_rule
+       ; content_rule
+       ; tags_rules
+       ; tags_list_rules
+       ]
+       publication
+  
   
   

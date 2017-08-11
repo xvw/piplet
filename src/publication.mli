@@ -22,25 +22,26 @@
 (** Module to describe a publication *)
 
 type reference = {
-  name: string
-; url: string
-; authors: string list
-; year: int
-}
+    name: string
+  ; url: string
+  ; authors: string list
+  ; year: int
+  }
 
 type t = {
-  title: string
-; abstract: string
-; tags: string list
-; files: File.name list
-; permalink: File.name
-; draft: bool
-; date: float
-; contributors: Contributor.t list
-; references: reference list
-; formatted_abstract : string
-; content : string
-}
+    title: string
+  ; abstract: string
+  ; tags: string list
+  ; files: File.name list
+  ; permalink: File.name
+  ; draft: bool
+  ; date: float
+  ; contributors: Contributor.t list
+  ; references: reference list
+  ; formatted_abstract : string
+  ; content : string
+  ; lang: string
+  }
 
 (** Convert a Sexp to a reference *)
 (* val reference_of_sexp : Sexp.t -> reference *)
