@@ -217,8 +217,22 @@ let tags_list_rules =
     "li-tags"
     tags_to_ul
 
+
+let to_rss_item base_link publication =
+  "<item>"
+  ^ "<title>" ^ publication.title ^ "</title>"
+  ^ "<link>" ^ (Util.add_slash base_link)
+  ^ publication.permalink  ^ "</link>"
+  ^ "<description>" ^ publication.abstract ^  "<description>"
+  ^ "<pubDate>" ^ (Datetime.to_rfc822 publication.date)  ^ "</pubDate>"
+  ^ "<generator>piplet-v1</generator>"
+  ^ "<language>" ^ publication.lang  ^ "</language>"
+  ^ "</item>"
+  |> Rss.item_of_string
+  
+
 let create template sexp =
-  let publication = of_file sexp in
+  let publication = t_of_sexp sexp in
   File.read template
   |> Template.apply
        [

@@ -77,3 +77,6 @@ val join : ('a -> string) -> string -> 'a list -> string
 
 (** Join a string *)
 val join_str : string -> string list -> string
+
+(** Add a slash (if needed) on an uri *)
+val add_slash : uri -> uri

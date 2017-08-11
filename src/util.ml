@@ -115,3 +115,12 @@ let join f separator = function
 
 let join_str = join (fun x -> x)
   
+
+let add_slash uri =
+  let len = String.length uri in
+  if len == 0 then "/"
+  else 
+    match uri.[pred len] with
+    | '/' -> uri
+    | _ -> uri ^ "/"
+    
