@@ -26,6 +26,10 @@ type email = string
 type uri = string
 
 
+(** Identity function *)
+val id : 'a -> 'a
+
+
 (** Apply trim and lowercase to a string *)
 val tokenize: string -> string
 
@@ -80,3 +84,6 @@ val join_str : string -> string list -> string
 
 (** Add a slash (if needed) on an uri *)
 val add_slash : uri -> uri
+
+(** Concat two path members *)
+val concat_uri: uri -> uri -> uri

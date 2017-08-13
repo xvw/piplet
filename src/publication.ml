@@ -210,7 +210,7 @@ let content_rule =
 let tags_rules =
   Template.macro
     "tags"
-    (fun post _ -> Util.join (fun x -> x) ", " post.tags)
+    (fun post _ -> Util.join_str ", " post.tags)
 
 let tags_list_rules =
   Template.macro
@@ -221,14 +221,32 @@ let tags_list_rules =
 let to_rss_item base_link publication =
   "<item>"
   ^ "<title>" ^ publication.title ^ "</title>"
-  ^ "<link>" ^ (Util.add_slash base_link)
-  ^ publication.permalink  ^ "</link>"
+  ^ "<link>" ^ (Util.concat_uri base_link publication.permalink)
+  ^ "</link>"
   ^ "<description>" ^ publication.abstract ^  "<description>"
   ^ "<pubDate>" ^ (Datetime.to_rfc822 publication.date)  ^ "</pubDate>"
   ^ "<generator>piplet-v1</generator>"
   ^ "<language>" ^ publication.lang  ^ "</language>"
   ^ "</item>"
   |> Rss.item_of_string
+
+
+let to_json base_link pub =
+  Format.sprintf
+    {json|
+     {
+       "title": %s; 
+       "link": %s; 
+       "date": %s; 
+       "tags": %s;
+       "abstract": %s;
+     }
+     |json}
+    pub.title
+    (Util.concat_uri base_link pub.permalink)
+    (Datetime.to_rfc822 pub.date)
+    (Json.of_list Util.id pub.tags)
+    pub.abstract
   
 
 let create template sexp =

@@ -25,6 +25,9 @@ exception Malformed_sexp of (string * string)
 type email = string
 type uri = string
 
+
+let id x = x
+
 let add_char =
   Printf.sprintf "%s%c"
 
@@ -124,3 +127,4 @@ let add_slash uri =
     | '/' -> uri
     | _ -> uri ^ "/"
     
+let concat_uri a b = (add_slash a) ^ b
