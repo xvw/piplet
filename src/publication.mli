@@ -54,6 +54,9 @@ val of_file : File.name -> t
 
 (** Convert a publication to an XML node  *)
 val to_rss_item : Util.uri -> t -> Rss.item
+
+(** Convert a publication to a Json node *)
+val to_json : Util.uri -> t -> Json.t
   
 (** Convert a template and a sexpfile to an html publication *)
 val create : File.name -> Sexp.t -> string
