@@ -32,3 +32,15 @@ let of_option f = function
 
 let of_list f l =
   "[" ^ (Util.join f ", " l) ^ "]"
+
+let of_hashtbl f hash =
+  let result =
+    Hashtbl.fold
+      (fun k v acc ->
+        let key = "\""^k^"\": " in
+        let value = (f v) ^ ";" in
+        acc ^ key ^ value
+      )
+      hash
+      ""
+  in "{" ^ result ^ "}"

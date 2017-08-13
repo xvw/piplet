@@ -40,3 +40,6 @@ val of_option : ('a -> t) -> 'a option -> t
 
 (** Represents a Null value in Json  *)
 val null : t 
+
+(** Convert an Hashtbl to a Json object *)
+val of_hashtbl : ('a -> t) -> (string, 'a) Hashtbl.t -> t
