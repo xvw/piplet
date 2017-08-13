@@ -21,6 +21,14 @@
 
 type t = string
 
+let null = "null"
 let of_int = string_of_int
 let of_float = string_of_float
+let of_bool x = if x then "true" else "false"
 
+let of_option f = function
+  | None -> null
+  | Some x -> f x
+
+let of_list f l =
+  "[" ^ (Util.join f ", " l) ^ "]"
