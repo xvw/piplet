@@ -50,4 +50,3 @@ let () =
   match template with
   | None -> Util.print Color.red "You have to specify a template"
   | Some t -> ()
-    
