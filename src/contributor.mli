@@ -33,5 +33,8 @@ type t = {
 (** Create an author *)
 val create: name -> email -> t
 
+(** Initialize an Hashtbl.t for recipes contributors in multiple files *)
+val init : unit -> all
+
 (** Convert git log to contributor *)
 val from_gitlog : string -> t
