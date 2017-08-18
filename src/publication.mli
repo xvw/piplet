@@ -36,7 +36,7 @@ type t = {
   ; permalink: File.name
   ; draft: bool
   ; date: float
-  ; contributors: (Contributor.name, Contributor.email) Hashtbl.t
+  ; contributors: Contributor.all
   ; references: reference list
   ; formatted_abstract : string
   ; content : string

@@ -76,8 +76,7 @@ let mtime filename =
   let stats = Unix.stat filename in
   stats.Unix.st_mtime
 
-let contributors filename =
-  let hash = Hashtbl.create 1 in
+let contributors ?(hash = Hashtbl.create 1) filename =
   try
     let _ = 
       "git log --format=\"%an"

@@ -23,6 +23,7 @@
 
 type name  = string
 type email = string
+type all = (name, email) Hashtbl.t
 
 type t = {
   name:  name
