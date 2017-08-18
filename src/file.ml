@@ -77,15 +77,22 @@ let mtime filename =
   stats.Unix.st_mtime
 
 let contributors filename =
+  let hash = Hashtbl.create 1 in
   try
-    "git log --format=\"%an"
-    ^ Util.uniq_separator
-    ^ "%ae\" "
-    ^ filename
-    ^ " | uniq"
-    |> Util.run_to_lines
-    |> List.map (Contributor.from_gitlog)
-  with _ -> []
+    let _ = 
+      "git log --format=\"%an"
+      ^ Util.uniq_separator
+      ^ "%ae\" "
+      ^ filename
+      ^ " | uniq"
+      |> Util.run_to_lines
+      |> List.iter (fun elt ->
+             let contrib = Contributor.from_gitlog elt in
+             let open Contributor in
+             Hashtbl.add hash contrib.email contrib.name
+           )
+    in hash
+  with _ -> hash
 
 let exists = Sys.file_exists
 

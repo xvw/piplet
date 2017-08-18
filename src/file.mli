@@ -80,7 +80,7 @@ val has_extension: name -> extension -> bool
 val mtime : name -> Datetime.t
 
 (** Get the contributors list of a file *)
-val contributors: name -> Contributor.t list
+val contributors: name -> (Contributor.name, Contributor.email) Hashtbl.t
 
 (** Returns the kind of a document by his name *)
 val kind_of : name -> document_kind

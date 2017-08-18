@@ -41,7 +41,7 @@ type t = {
   ; permalink: File.name
   ; draft: bool
   ; date: Datetime.t
-  ; contributors: Contributor.t list
+  ; contributors: (Contributor.name, Contributor.email) Hashtbl.t
   ; references: reference list
   ; formatted_abstract : string
   ; content : string
@@ -56,7 +56,7 @@ let empty = {
   ; permalink = ""
   ; draft = false
   ; date = Datetime.now ()
-  ; contributors = []
+  ; contributors = Hashtbl.create 1
   ; references = []
   ; formatted_abstract = ""
   ; content = ""
@@ -261,6 +261,3 @@ let create template sexp =
        ; tags_list_rules
        ]
        publication
-  
-  
-  
