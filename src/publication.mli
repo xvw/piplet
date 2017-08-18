@@ -59,6 +59,6 @@ val to_rss_item : Util.uri -> t -> Rss.item
 val to_json : Util.uri -> t -> Json.t
   
 (** Convert a template and a sexpfile to an html publication *)
-val create : File.name -> Sexp.t -> string
+val create : File.name -> t -> string
 
   

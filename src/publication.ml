@@ -258,8 +258,7 @@ let to_json base_link pub =
     pub.abstract
   
 
-let create template sexp =
-  let publication = t_of_sexp sexp in
+let create template publication =
   File.read template
   |> Template.apply
        [
