@@ -242,7 +242,7 @@ let to_json base_link pub =
        "abstract": %s;
      }
      |json}
-    pub.title
+    (pub.title)
     (Util.concat_uri base_link pub.permalink)
     (Datetime.to_rfc822 pub.date)
     (Json.of_list Util.id pub.tags)
