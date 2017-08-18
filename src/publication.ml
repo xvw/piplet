@@ -168,14 +168,23 @@ let process_files files =
   else content
 
 let of_file filename =
+  let bucket = Contributor.init () in
   let record =
     filename
     |> Sexp.of_file
     |> t_of_sexp
-  and contributors = File.contributors filename in
+  in
+  let () =
+    List.iter
+      (fun f ->
+        File.contributors ~hash:bucket f
+        |> ignore
+      )
+      (filename :: record.files)
+  in
   {
     record with
-    contributors = contributors
+    contributors = bucket
   ; formatted_abstract = Processor.of_markdown record.abstract
   ; content = List.fold_left create_content "" record.files
   }
