@@ -29,3 +29,6 @@ val finish :
   -> string
   -> unit
 
+
+(** Common way to save (or print) a file *)
+val default_finish : string option -> string -> unit 

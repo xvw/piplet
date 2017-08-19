@@ -24,3 +24,8 @@ let finish f g output =
   match output with
   | Some x -> f x
   | None -> g
+
+let default_finish =
+  finish
+    (File.overwrite)
+    (Util.print Color.cyan)
