@@ -34,16 +34,13 @@ let () =
       callback_function
       usage
   in
-  let need_output = !output <> Util.uniq_separator in
+  let outp = Util.uniq_to_option !output in
   match !args with
   | [] -> Util.print Color.red  "No configuration file"
   | [css_file] ->
     if File.exists css_file then begin
       let () = Cache.init () in
       let res = Css.create ~interactive:true css_file in
-      if need_output then
-        let () = File.overwrite !output res in
-        Util.print Color.green ("The file is generated here: " ^ !output )
-      else Util.print Color.cyan res
+      Cli.default_finish outp res
     end else Util.print Color.red ("The file: " ^ css_file ^ ", does not exists")
   |  _ -> Util.print Color.red "You can send only one configuration file !"
