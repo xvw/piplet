@@ -87,7 +87,3 @@ val add_slash : uri -> uri
 
 (** Concat two path members *)
 val concat_uri: uri -> uri -> uri
-
-
-(** Final Flush : Print or save *)
-val final_flush : string option -> string -> unit
