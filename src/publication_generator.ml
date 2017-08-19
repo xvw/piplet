@@ -46,14 +46,10 @@ let () =
     
   in
   let template = Util.uniq_to_option !tpl in
-  let output = Util.uniq_to_option !output in
+  let outp = Util.uniq_to_option !output in
   match template with
   | None -> Util.print Color.red "You have to specify a template"
   | Some t ->
-     let publication = Publication.of_file (!args) in
-     let content = Publication.create t publication in
-     begin
-       match output with
-       | None -> print_endline content
-       | _ -> ()
-     end
+     Publication.of_file (!args)
+     |> Publication.create t
+     |> Cli.default_finish outp
