@@ -20,4 +20,7 @@
  *)
 
 
-let finish _ _ = ()
+let finish f g output =
+  match output with
+  | Some x -> f x
+  | None -> g

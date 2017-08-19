@@ -22,5 +22,10 @@
 (** A Module to wirte easyli CLI *)
 
 (** Print or save *)
-val finish : string option -> string -> unit
+val finish :
+  (string -> string -> unit)
+  -> (string -> unit)
+  -> string option
+  -> string
+  -> unit
 
