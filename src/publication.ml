@@ -216,16 +216,35 @@ let content_rule =
     "content"
     (fun post _ -> post.content)
   
-let tags_rules =
+let tags_rule =
   Template.macro
     "tags"
     (fun post _ -> Util.join_str ", " post.tags)
 
-let tags_list_rules =
+let tags_list_rule =
   Template.macro
     "li-tags"
     tags_to_ul
 
+let reference_name_rule =
+  Template.macro
+    "ref-name"
+    (fun reference _ -> reference.name)
+
+let reference_url_rule =
+  Template.macro
+    "ref-url"
+    (fun reference _ -> reference.url)
+
+let reference_authors_rule =
+  Template.macro
+    "ref-authors"
+    (fun reference _ -> Util.join_str ", " reference.authors)
+
+let reference_year_rule =
+  Template.macro
+    "ref-year"
+    (fun reference _ -> string_of_int reference.year)
 
 let to_rss_item base_link publication =
   "<item>"
@@ -265,7 +284,7 @@ let create template publication =
          title_rule
        ; abstract_rule
        ; content_rule
-       ; tags_rules
-       ; tags_list_rules
+       ; tags_rule
+       ; tags_list_rule
        ]
        publication
