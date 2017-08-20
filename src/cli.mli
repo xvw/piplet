@@ -31,4 +31,4 @@ val finish :
 
 
 (** Common way to save (or print) a file *)
-val default_finish : string option -> string -> unit 
+val default_finish : string option -> string -> unit
