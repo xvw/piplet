@@ -43,3 +43,6 @@ val of_file: File.name -> t
 
 (** Convert a Sexp to a string *)
 val to_string: t -> string
+
+(** to human readable string *)
+val to_formatted_string : t -> string
